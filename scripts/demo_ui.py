@@ -615,9 +615,11 @@ def build_ui() -> gr.Blocks:
                 elem_id="transcribe-btn",
                 variant="secondary",
             )
-            gr.Markdown(
-                "_Voice transcription uses Google Speech-to-Text (online). "
-                "On-device speech recognition is a planned feature for a future Gemma release._",
+            gr.HTML(
+                "<p style='font-size:0.78rem;color:#a0c4c6;margin:4px 0 0;line-height:1.4;'>"
+                "🌐 Voice transcription uses Google Speech-to-Text <em>(requires internet)</em>. "
+                "On-device speech is a planned feature for a future Gemma release."
+                "</p>"
             )
             transcribe_status = gr.Markdown("", label="")
 
