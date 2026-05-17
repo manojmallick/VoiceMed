@@ -1,0 +1,806 @@
+{
+  "laceration": {
+    "display_name": "Wound / Laceration",
+    "icd10": "S01",
+    "immediate_actions": [
+      "Apply direct pressure with clean cloth to control bleeding",
+      "Do not remove any impaled objects",
+      "Elevate injured limb if possible"
+    ],
+    "steps_community_health_post": [
+      "Wash hands with soap before touching wound",
+      "Irrigate wound thoroughly with clean water or normal saline for at least 5 minutes",
+      "Remove visible debris gently with forceps",
+      "Apply antiseptic (chlorhexidine 0.05% or povidone iodine)",
+      "For wounds less than 2cm: close with steri-strips and cover with sterile dressing",
+      "Change dressing every 24-48 hours",
+      "Give paracetamol 500mg for pain relief",
+      "Check tetanus immunization status — give TT booster if not immunized in 5 years"
+    ],
+    "steps_district_clinic": [
+      "All above steps",
+      "Suture wounds over 2cm length",
+      "Consider antibiotics if contaminated wound",
+      "Arrange follow-up in 48 hours"
+    ],
+    "supplies": ["clean water", "gauze", "chlorhexidine or povidone iodine", "steri-strips", "bandage", "paracetamol", "tetanus toxoid"],
+    "refer_if": [
+      "Wound longer than 2-3cm",
+      "Wound on face, hand, or joint",
+      "Signs of infection: redness, swelling, pus, fever after 24-48 hours",
+      "Bleeding not controlled after 10 minutes of direct pressure",
+      "Deep wound possibly involving tendon, bone or nerve",
+      "Animal bite or human bite",
+      "Patient not immunized against tetanus"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO Primary Care Guidelines, IMCI 2024"
+  },
+  "fever_child": {
+    "display_name": "Fever in Child Under 5",
+    "icd10": "R50.9",
+    "immediate_actions": [
+      "Take temperature",
+      "If temperature above 38.5°C give paracetamol",
+      "Remove excess clothing",
+      "Encourage fluids"
+    ],
+    "steps_community_health_post": [
+      "Measure temperature (axillary: add 0.5°C for true temperature)",
+      "Assess for malaria if in endemic area — do RDT if available",
+      "Give paracetamol 15mg/kg every 4-6 hours",
+      "Encourage ORS or breastfeeding if still breastfed",
+      "Assess for danger signs: convulsion, stiff neck, severe vomiting, not drinking",
+      "Tepid sponging if temperature above 39°C",
+      "Advise caregiver to return immediately if child becomes worse"
+    ],
+    "steps_district_clinic": [
+      "All above steps",
+      "Blood malaria smear or RDT",
+      "Full blood count if available",
+      "Consider lumbar puncture if meningitis suspected"
+    ],
+    "supplies": ["thermometer", "paracetamol", "ORS", "RDT for malaria if available"],
+    "refer_if": [
+      "Temperature above 39.5°C not responding to paracetamol",
+      "Any convulsion or seizure",
+      "Stiff neck (meningitis sign)",
+      "Rash with fever",
+      "Difficulty breathing",
+      "Child unable to drink",
+      "Child under 2 months with any fever",
+      "Fever lasting more than 3 days"
+    ],
+    "follow_up_hours": 24,
+    "source": "WHO IMCI Chart Booklet 2024, WHO ETAT Guidelines"
+  },
+  "malaria_uncomplicated": {
+    "display_name": "Uncomplicated Malaria",
+    "icd10": "B54",
+    "immediate_actions": [
+      "Test with RDT (Rapid Diagnostic Test) if available",
+      "Give paracetamol for fever while awaiting diagnosis",
+      "Assess for danger signs"
+    ],
+    "steps_community_health_post": [
+      "Confirm positive malaria RDT or clinical diagnosis in endemic area",
+      "Give artemether-lumefantrine (AL) based on weight",
+      "Ensure first dose taken with food",
+      "Explain 6-dose schedule over 3 days",
+      "Give paracetamol for fever",
+      "Advise to return if no improvement in 48 hours or any danger sign",
+      "Assess nutrition and give vitamin A if eligible"
+    ],
+    "steps_district_clinic": [
+      "All above steps plus",
+      "Blood film for species confirmation",
+      "Treat severe malaria with IV artesunate"
+    ],
+    "supplies": ["RDT", "artemether-lumefantrine", "paracetamol"],
+    "refer_if": [
+      "Danger signs: convulsion, altered consciousness, inability to drink",
+      "Repeated vomiting preventing oral medication",
+      "Severe anaemia (very pale palms, severe weakness)",
+      "Jaundice",
+      "First trimester pregnancy",
+      "No improvement after 48 hours of treatment",
+      "Infant under 5kg"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO Guidelines for Treatment of Malaria 2022"
+  },
+  "severe_malaria": {
+    "display_name": "Severe Malaria — EMERGENCY",
+    "icd10": "B50.0",
+    "immediate_actions": [
+      "REFER IMMEDIATELY to hospital",
+      "Give rectal artesunate 10mg/kg if available while arranging transport",
+      "Do not delay referral for any reason",
+      "Prevent hypoglycaemia: give sugar solution if patient can swallow"
+    ],
+    "steps_community_health_post": [
+      "Give pre-referral rectal artesunate if available",
+      "Manage hypoglycaemia with sugar solution orally if conscious",
+      "Prevent convulsions: do not leave patient alone",
+      "Transport immediately to hospital"
+    ],
+    "steps_district_clinic": [
+      "IV artesunate 2.4mg/kg at 0, 12, 24 hours then daily",
+      "IV glucose for hypoglycaemia",
+      "IV fluids for dehydration — carefully (risk of cerebral oedema)",
+      "Phenobarbital or diazepam for convulsions"
+    ],
+    "supplies": ["rectal artesunate (pre-referral)", "glucose solution", "transport"],
+    "refer_if": ["Always refer — this IS the referral case"],
+    "danger_signs": [
+      "Altered consciousness or coma",
+      "Two or more convulsions in 24 hours",
+      "Prostration (unable to sit without support)",
+      "Respiratory distress",
+      "Severe anaemia",
+      "Abnormal bleeding",
+      "Jaundice with vital organ dysfunction"
+    ],
+    "follow_up_hours": 0,
+    "source": "WHO Guidelines for Treatment of Malaria 2022 — Severe Malaria"
+  },
+  "diarrhoea_acute": {
+    "display_name": "Acute Diarrhoea / Gastroenteritis",
+    "icd10": "A09",
+    "immediate_actions": [
+      "Assess dehydration status",
+      "Start ORS immediately for any dehydration",
+      "Continue breastfeeding if breastfed"
+    ],
+    "steps_community_health_post": [
+      "Assess dehydration: skin turgor, sunken eyes, thirst, lethargy",
+      "Give ORS for mild-moderate dehydration: 50-100mL/kg over 3-4 hours",
+      "Give zinc: 10mg/day under 6 months; 20mg/day over 6 months for 10-14 days",
+      "Continue feeding — do not stop food",
+      "Advise on preparation of ORS and hygiene",
+      "Reassess after 3-4 hours of ORS"
+    ],
+    "steps_district_clinic": [
+      "All above steps",
+      "IV fluids if unable to drink",
+      "Stool culture if bloody diarrhoea or cholera suspected",
+      "Antibiotics only for cholera or shigella (bloody diarrhoea)"
+    ],
+    "supplies": ["ORS sachet", "zinc tablet", "clean water"],
+    "refer_if": [
+      "Signs of severe dehydration: sunken eyes, skin pinch returns slowly, unable to drink, lethargic",
+      "Bloody diarrhoea (dysentery) — treat with antibiotics and refer",
+      "Persistent vomiting preventing ORS intake",
+      "Diarrhoea more than 14 days (persistent diarrhoea)",
+      "Child under 2 months",
+      "Convulsions"
+    ],
+    "follow_up_hours": 24,
+    "source": "WHO IMCI Guidelines 2024, WHO Diarrhoea Treatment Guidelines"
+  },
+  "pneumonia_child": {
+    "display_name": "Pneumonia in Child",
+    "icd10": "J18",
+    "immediate_actions": [
+      "Count respiratory rate for one full minute",
+      "Check for chest indrawing",
+      "Assess oxygen saturation if pulse oximeter available",
+      "Give first dose of antibiotic immediately if pneumonia confirmed"
+    ],
+    "steps_community_health_post": [
+      "Measure respiratory rate: fast breathing = over 60/min under 2 months; over 50/min 2-11 months; over 40/min 1-5 years",
+      "Look for chest indrawing, grunting, nasal flaring",
+      "Classify: fast breathing without indrawing = non-severe pneumonia",
+      "For non-severe: amoxicillin 25mg/kg twice daily for 5 days",
+      "Give paracetamol for fever",
+      "Encourage fluids and continued feeding",
+      "Advise to return immediately if breathing worsens, child cannot drink, or develops chest indrawing"
+    ],
+    "steps_district_clinic": [
+      "Chest X-ray",
+      "Oxygen if SpO2 below 90%",
+      "IV amoxicillin or ampicillin for severe pneumonia",
+      "Consider TB if chronic cough"
+    ],
+    "supplies": ["amoxicillin", "paracetamol", "pulse oximeter if available"],
+    "refer_if": [
+      "Chest indrawing (severe pneumonia)",
+      "SpO2 below 90%",
+      "Grunting",
+      "Central cyanosis",
+      "Unable to drink",
+      "Stridor when calm",
+      "Child very lethargic or unconscious",
+      "Under 2 months with any fast breathing"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO IMCI Guidelines 2024"
+  },
+  "wound_infection": {
+    "display_name": "Wound Infection / Cellulitis",
+    "icd10": "L03",
+    "immediate_actions": [
+      "Assess severity: limited redness vs spreading vs systemic symptoms",
+      "Check for abscess formation"
+    ],
+    "steps_community_health_post": [
+      "Clean wound with chlorhexidine or povidone iodine",
+      "Give amoxicillin 500mg every 8 hours for 7 days for mild cellulitis",
+      "Elevate affected limb",
+      "Mark edge of redness with pen to monitor spread",
+      "Give paracetamol for pain and fever",
+      "Review in 24-48 hours"
+    ],
+    "steps_district_clinic": [
+      "Incision and drainage of abscess",
+      "IV antibiotics for systemic infection",
+      "Wound swab for culture"
+    ],
+    "supplies": ["chlorhexidine", "amoxicillin", "paracetamol", "marker pen"],
+    "refer_if": [
+      "Redness spreading beyond marked border in 24 hours",
+      "Fluctuant abscess needing incision and drainage",
+      "Fever above 38.5°C with cellulitis",
+      "Red streaking (lymphangitis)",
+      "Wound near face or perineum",
+      "Diabetic patient",
+      "No improvement in 48 hours of antibiotics"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO Primary Health Care Guidelines 2024"
+  },
+  "dehydration": {
+    "display_name": "Dehydration",
+    "icd10": "E86",
+    "immediate_actions": [
+      "Assess degree of dehydration",
+      "Start ORS immediately for any dehydration",
+      "Do not give plain water alone"
+    ],
+    "steps_community_health_post": [
+      "Mild dehydration (some signs): give ORS 50mL/kg over 3-4 hours",
+      "Reassess every hour",
+      "Continue ORS at 10-20mL/kg after each loose stool",
+      "Encourage breastfeeding and food",
+      "Teach mother/caregiver how to prepare and give ORS"
+    ],
+    "steps_district_clinic": [
+      "Severe dehydration: IV Ringer's lactate 100mL/kg over 3 hours (child) or 30mL/kg over 30 min then 70mL/kg over 2.5 hours",
+      "Monitor urine output",
+      "Treat underlying cause"
+    ],
+    "supplies": ["ORS sachets", "clean water", "cup"],
+    "refer_if": [
+      "Severe dehydration: sunken eyes, skin pinch slow, unable to drink, lethargic",
+      "Bloody stool",
+      "Vomiting preventing ORS administration",
+      "Under 2 months",
+      "Not improving with ORS"
+    ],
+    "follow_up_hours": 24,
+    "source": "WHO IMCI 2024"
+  },
+  "malnutrition_severe": {
+    "display_name": "Severe Acute Malnutrition (SAM)",
+    "icd10": "E43",
+    "immediate_actions": [
+      "Check for bilateral pitting oedema",
+      "Check MUAC (mid-upper arm circumference)",
+      "Assess for medical complications"
+    ],
+    "steps_community_health_post": [
+      "MUAC under 115mm in child 6-59 months = SAM",
+      "Check for bilateral oedema",
+      "Screen for medical complications: diarrhoea, pneumonia, fever",
+      "Enrol in community-based management of acute malnutrition (CMAM) program",
+      "Give ready-to-use therapeutic food (RUTF) if available",
+      "Treat with amoxicillin 80mg/kg/day for 7 days",
+      "Give vitamin A",
+      "Treat any infections"
+    ],
+    "steps_district_clinic": [
+      "Inpatient stabilization for complicated SAM",
+      "F-75 therapeutic milk then F-100",
+      "Treat hypoglycaemia, hypothermia, dehydration carefully",
+      "Transition to RUTF when stable"
+    ],
+    "supplies": ["RUTF (Plumpy'nut)", "amoxicillin", "vitamin A", "MUAC tape"],
+    "refer_if": [
+      "Any danger sign: unconscious, convulsion, respiratory distress",
+      "Severe bilateral oedema",
+      "Failure to eat RUTF",
+      "Medical complications: severe pneumonia, severe dehydration",
+      "Hypoglycaemia (blood glucose under 3mmol/L)"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO Guidelines for the Management of Severe Acute Malnutrition 2023"
+  },
+  "eye_infection_conjunctivitis": {
+    "display_name": "Eye Infection / Conjunctivitis",
+    "icd10": "H10",
+    "immediate_actions": [
+      "Assess for visual loss",
+      "Check if one or both eyes affected",
+      "Look for corneal clouding (emergency sign)"
+    ],
+    "steps_community_health_post": [
+      "Clean discharge from eye with clean wet cloth, from inner to outer corner",
+      "For bacterial conjunctivitis: apply tetracycline 1% eye ointment 3 times daily for 7 days",
+      "Neonatal conjunctivitis: apply tetracycline 1% ointment 3 times daily for 7 days",
+      "Advise good hand hygiene to prevent spread",
+      "Do not patch the eye"
+    ],
+    "steps_district_clinic": [
+      "Gram stain and culture",
+      "Systemic antibiotics for gonococcal conjunctivitis",
+      "Ophthalmology referral for corneal involvement"
+    ],
+    "supplies": ["tetracycline 1% eye ointment", "clean water"],
+    "refer_if": [
+      "Corneal clouding or ulceration",
+      "Reduced vision",
+      "Severe pain in eye",
+      "Trauma to eye",
+      "No improvement after 3 days of treatment",
+      "Neonatal conjunctivitis with profuse discharge (gonococcal)"
+    ],
+    "follow_up_hours": 72,
+    "source": "WHO IMCI 2024"
+  },
+  "ear_infection_otitis": {
+    "display_name": "Ear Infection / Otitis Media",
+    "icd10": "H65",
+    "immediate_actions": [
+      "Ask about ear pain",
+      "Check for discharge from ear",
+      "Look behind ear for swelling (mastoiditis)"
+    ],
+    "steps_community_health_post": [
+      "Give amoxicillin 40mg/kg/day in 2 doses for 5 days",
+      "Give paracetamol for pain relief",
+      "Dry mopping of ear if discharge present with dry wick",
+      "Do not put anything in ear canal",
+      "Advise to complete full antibiotic course"
+    ],
+    "steps_district_clinic": [
+      "Otoscopy",
+      "Consider tympanometry",
+      "Myringotomy for chronic cases"
+    ],
+    "supplies": ["amoxicillin", "paracetamol"],
+    "refer_if": [
+      "Swelling behind ear (mastoiditis)",
+      "Facial nerve palsy",
+      "High fever with ear pain",
+      "Discharge for more than 14 days",
+      "No improvement after 48 hours of antibiotics"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO IMCI 2024"
+  },
+  "skin_rash_unspecified": {
+    "display_name": "Skin Rash (General)",
+    "icd10": "R21",
+    "immediate_actions": [
+      "Assess for anaphylaxis or severe allergic reaction",
+      "Check for fever",
+      "Identify distribution: localised vs widespread"
+    ],
+    "steps_community_health_post": [
+      "Describe rash: macules, papules, vesicles, pustules, urticaria",
+      "Localised with no fever: consider contact dermatitis, insect bite, ringworm",
+      "Ringworm (tinea): clotrimazole cream twice daily for 2-4 weeks",
+      "Urticaria (hives): chlorphenamine 4mg (adult) or 0.1mg/kg (child)",
+      "Scabies: apply permethrin 5% cream to whole body overnight",
+      "Check vaccination history if measles rash suspected"
+    ],
+    "steps_district_clinic": [
+      "Skin scraping for fungal infection",
+      "Allergy testing if recurrent urticaria",
+      "Dermatology referral for unclear diagnosis"
+    ],
+    "supplies": ["clotrimazole cream", "chlorphenamine", "permethrin 5%"],
+    "refer_if": [
+      "Widespread rash with fever — possible measles, dengue, typhoid",
+      "Rash with blistering (Stevens-Johnson syndrome)",
+      "Rash with joint pain",
+      "Purpuric rash (does not blanch on pressure — emergency)",
+      "Anaphylaxis: rash with breathing difficulty or collapse"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO Primary Health Care Guidelines 2024"
+  },
+  "antenatal_complications": {
+    "display_name": "Pregnancy Complications",
+    "icd10": "O26",
+    "immediate_actions": [
+      "Check gestational age",
+      "Check blood pressure",
+      "Ask about vaginal bleeding or severe abdominal pain"
+    ],
+    "steps_community_health_post": [
+      "Measure blood pressure at every visit",
+      "Check fetal movement after 28 weeks",
+      "Give iron + folic acid supplementation throughout pregnancy",
+      "Give intermittent preventive treatment for malaria if in endemic area",
+      "Counsel on danger signs in pregnancy",
+      "Ensure antenatal care registration"
+    ],
+    "steps_district_clinic": [
+      "Ultrasound for dating and fetal wellbeing",
+      "Blood group and Rh typing",
+      "HIV testing",
+      "Syphilis testing",
+      "Urine dipstick for protein"
+    ],
+    "supplies": ["iron-folic acid tablets", "blood pressure cuff", "urine dipstick"],
+    "refer_if": [
+      "Blood pressure above 140/90 (pre-eclampsia)",
+      "Headache with visual disturbance in pregnancy",
+      "Vaginal bleeding at any stage",
+      "Severe abdominal pain",
+      "Reduced or absent fetal movement",
+      "Convulsion in pregnancy (eclampsia — emergency)",
+      "Fever in pregnancy"
+    ],
+    "follow_up_hours": 24,
+    "source": "WHO Antenatal Care Guidelines 2024"
+  },
+  "postpartum_haemorrhage": {
+    "display_name": "Postpartum Haemorrhage — EMERGENCY",
+    "icd10": "O72",
+    "immediate_actions": [
+      "CALL FOR HELP IMMEDIATELY",
+      "Give misoprostol 600mcg orally or oxytocin 10 IU IM",
+      "Massage uterine fundus firmly",
+      "Prepare for immediate transfer to hospital"
+    ],
+    "steps_community_health_post": [
+      "Give uterotonic: misoprostol 600mcg orally (3 tablets) OR oxytocin 10IU IM",
+      "Bimanual uterine compression if trained",
+      "Establish IV access if possible",
+      "Keep patient warm",
+      "Elevate legs",
+      "Arrange emergency transport NOW"
+    ],
+    "steps_district_clinic": [
+      "IV oxytocin 20-40 IU in 1L normal saline",
+      "Surgical intervention: manual removal of placenta, repair of tears",
+      "Blood transfusion if available",
+      "Bakri balloon for refractory PPH"
+    ],
+    "supplies": ["misoprostol 600mcg OR oxytocin 10IU", "IV cannula", "IV fluids", "transport"],
+    "refer_if": ["Always refer after initial treatment — this is always an emergency"],
+    "follow_up_hours": 0,
+    "source": "WHO Guidelines for Management of Postpartum Haemorrhage 2023"
+  },
+  "tuberculosis_suspect": {
+    "display_name": "Tuberculosis (Suspected)",
+    "icd10": "A16",
+    "immediate_actions": [
+      "Ask about cough duration — 2+ weeks is TB suspect",
+      "Do not isolate patient without evidence, but advise cough hygiene",
+      "Note night sweats, weight loss, blood in sputum"
+    ],
+    "steps_community_health_post": [
+      "Identify TB symptoms: cough 2+ weeks, fever, night sweats, weight loss",
+      "Ask about contact with known TB case",
+      "Collect 2 sputum samples on 2 consecutive days",
+      "Refer for sputum microscopy or GeneXpert",
+      "Check HIV status",
+      "Do not start TB treatment without laboratory confirmation",
+      "Counsel on infection control: cover cough, ventilate rooms"
+    ],
+    "steps_district_clinic": [
+      "Sputum GeneXpert Xpert MTB/RIF",
+      "Chest X-ray",
+      "HIV testing",
+      "Start standard 6-month DOTS treatment if confirmed"
+    ],
+    "supplies": ["sputum container", "referral form"],
+    "refer_if": [
+      "All suspected TB — must be confirmed at clinic level",
+      "Haemoptysis (blood in sputum)",
+      "Severe breathlessness",
+      "Contact with drug-resistant TB"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO Consolidated Guidelines on Tuberculosis 2022"
+  },
+  "snake_bite": {
+    "display_name": "Snake Bite — EMERGENCY",
+    "icd10": "T63.0",
+    "immediate_actions": [
+      "Keep patient calm and still — immobilize bitten limb",
+      "Do NOT cut wound, suck venom, or apply tourniquet",
+      "Remove rings, watches from bitten limb",
+      "REFER TO HOSPITAL IMMEDIATELY for antivenom"
+    ],
+    "steps_community_health_post": [
+      "Identify snake if safe — do not approach or kill snake (photograph if possible)",
+      "Immobilize limb with splint at heart level",
+      "Clean bite site with soap and water",
+      "Mark swelling border with pen and time",
+      "Monitor for systemic signs: drooping eyelids, difficulty swallowing, bleeding, paralysis",
+      "Arrange urgent transport to hospital with antivenom"
+    ],
+    "steps_district_clinic": [
+      "Specific antivenom based on snake species",
+      "Supportive care: IV fluids, airway management",
+      "Tetanus prophylaxis",
+      "Wound care"
+    ],
+    "supplies": ["bandage for immobilization", "transport", "marker pen", "soap and water"],
+    "refer_if": [
+      "All snake bites should be referred for observation",
+      "Any systemic symptoms: collapse, bleeding, paralysis, ptosis, difficulty breathing"
+    ],
+    "follow_up_hours": 0,
+    "source": "WHO Guidelines for Management of Snakebite 2019"
+  },
+  "burns": {
+    "display_name": "Burns",
+    "icd10": "T30",
+    "immediate_actions": [
+      "Stop the burning: remove from source, cool with running cool water for 20 minutes",
+      "Do NOT use ice, butter, toothpaste, or traditional remedies",
+      "Remove clothing and jewellery from burned area if not stuck"
+    ],
+    "steps_community_health_post": [
+      "Estimate burn surface area using palm method (patient's palm = 1%)",
+      "Cool burn with running clean water for 20 minutes",
+      "Cover with clean non-fluffy dressing",
+      "Give paracetamol or ibuprofen for pain",
+      "Give ORS or fluids by mouth",
+      "Minor burns under 5% body surface area without involvement of face/hands/genitals: manage locally",
+      "Apply clean dressing daily"
+    ],
+    "steps_district_clinic": [
+      "IV fluid resuscitation for major burns",
+      "Silver sulfadiazine cream",
+      "Wound debridement",
+      "Tetanus prophylaxis"
+    ],
+    "supplies": ["clean water", "gauze dressing", "paracetamol", "ORS"],
+    "refer_if": [
+      "Burns covering more than 10% body surface (5% in children)",
+      "Burns to face, hands, feet, genitals, or major joints",
+      "Full thickness burns (white/charred, painless)",
+      "Airway involvement: singed nose hairs, hoarse voice after fire",
+      "Chemical or electrical burns",
+      "Child under 2 years with any significant burn"
+    ],
+    "follow_up_hours": 24,
+    "source": "WHO Guidelines for Burns Management 2024"
+  },
+  "hypertension": {
+    "display_name": "Hypertension",
+    "icd10": "I10",
+    "immediate_actions": [
+      "Measure blood pressure twice — 5 minutes apart",
+      "Check for hypertensive emergency: headache, visual changes, chest pain, neuro symptoms"
+    ],
+    "steps_community_health_post": [
+      "Blood pressure above 140/90 on 2 readings = hypertension",
+      "Ask about symptoms of end-organ damage",
+      "Lifestyle advice: reduce salt, exercise, no tobacco, limit alcohol",
+      "Record and refer for initiation of antihypertensive medication",
+      "If already on medication: check adherence, refill prescription"
+    ],
+    "steps_district_clinic": [
+      "Initiate antihypertensive: amlodipine 5mg or hydrochlorothiazide or lisinopril",
+      "Fasting blood glucose and lipids",
+      "Urine dipstick for proteinuria",
+      "ECG if available"
+    ],
+    "supplies": ["blood pressure cuff", "referral form"],
+    "refer_if": [
+      "Blood pressure above 180/110 (hypertensive urgency)",
+      "Blood pressure above 140/90 with headache, visual changes, chest pain — EMERGENCY",
+      "Pregnancy with BP above 140/90 (pre-eclampsia)",
+      "New diagnosis requiring medication initiation"
+    ],
+    "follow_up_hours": 48,
+    "source": "WHO HEARTS Technical Package 2023"
+  },
+  "diabetes_hypoglycaemia": {
+    "display_name": "Hypoglycaemia (Low Blood Sugar)",
+    "icd10": "E16.0",
+    "immediate_actions": [
+      "If patient conscious: give sugar immediately — 3 teaspoons sugar in water, glucose tablets, or sweet drink",
+      "If unconscious: DO NOT give anything by mouth — refer IMMEDIATELY"
+    ],
+    "steps_community_health_post": [
+      "Measure blood glucose if glucometer available (below 3.9mmol/L = hypoglycaemia)",
+      "If conscious: give 15-20g carbohydrate (3 tsp sugar in water, juice, glucose tablets)",
+      "Recheck in 15 minutes — repeat if still symptomatic",
+      "Once recovered: give snack or meal",
+      "Identify cause: missed meal, too much insulin/medication, exercise",
+      "Adjust medication or meal timing if recurrent"
+    ],
+    "steps_district_clinic": [
+      "50mL of 50% dextrose IV if unconscious",
+      "Glucagon IM if IV access impossible",
+      "Review diabetes medication"
+    ],
+    "supplies": ["sugar", "clean water", "glucometer if available"],
+    "refer_if": [
+      "Patient unconscious — EMERGENCY",
+      "Seizure from hypoglycaemia",
+      "Does not recover after 2 doses of oral sugar",
+      "Recurrent hypoglycaemia requiring medication adjustment"
+    ],
+    "follow_up_hours": 4,
+    "source": "WHO Global Diabetes Compact 2023, SIGN Guidelines"
+  },
+  "asthma_acute": {
+    "display_name": "Acute Asthma Attack / Wheeze",
+    "icd10": "J45",
+    "immediate_actions": [
+      "Sit patient upright",
+      "Give salbutamol inhaler 4-8 puffs via spacer (or nebuliser if available)",
+      "Assess response in 15-20 minutes"
+    ],
+    "steps_community_health_post": [
+      "Assess severity: can patient speak in sentences? respiratory rate? accessory muscle use?",
+      "Mild-moderate: salbutamol 4-8 puffs via spacer every 20 minutes for 3 doses",
+      "If improving: continue salbutamol every 4-6 hours",
+      "Give prednisolone 1mg/kg (max 40mg) for 3-5 days if moderate attack",
+      "Identify and remove trigger if possible",
+      "Educate on inhaler technique"
+    ],
+    "steps_district_clinic": [
+      "Nebulised salbutamol and ipratropium",
+      "IV hydrocortisone",
+      "Oxygen if SpO2 below 92%",
+      "Chest X-ray"
+    ],
+    "supplies": ["salbutamol inhaler", "spacer device", "prednisolone"],
+    "refer_if": [
+      "Unable to speak in words — only words or silent chest (life-threatening)",
+      "SpO2 below 92%",
+      "No improvement after 3 doses of salbutamol",
+      "Cyanosis",
+      "First severe attack"
+    ],
+    "follow_up_hours": 24,
+    "source": "WHO Package of Essential Non-communicable Disease Interventions 2023, GINA Guidelines"
+  },
+  "convulsion_febrile": {
+    "display_name": "Febrile Convulsion",
+    "icd10": "R56.0",
+    "immediate_actions": [
+      "Stay calm",
+      "Place child on side (recovery position) to prevent aspiration",
+      "Do not put anything in the mouth",
+      "Time the seizure"
+    ],
+    "steps_community_health_post": [
+      "Ensure airway is open: tilt head, lift chin",
+      "Place in recovery position on their side",
+      "Do not restrain movements",
+      "Give rectal diazepam 0.3mg/kg if available and seizure ongoing after 5 minutes",
+      "Reduce fever: paracetamol 15mg/kg once seizure stops",
+      "Reassure parents — febrile convulsions are common and usually not dangerous",
+      "Explain that child may be sleepy after seizure — this is normal"
+    ],
+    "steps_district_clinic": [
+      "Lumbar puncture if meningitis suspected",
+      "Blood glucose",
+      "Rectal or IV diazepam",
+      "Investigate cause of fever"
+    ],
+    "supplies": ["rectal diazepam if available", "paracetamol", "thermometer"],
+    "refer_if": [
+      "Seizure lasting more than 5 minutes",
+      "Focal (partial) seizure",
+      "Child does not return to normal within 30 minutes",
+      "Stiff neck or bulging fontanelle (meningitis)",
+      "Under 6 months or over 5 years with first febrile seizure",
+      "Child has recurrent seizures"
+    ],
+    "follow_up_hours": 24,
+    "source": "WHO IMCI 2024, NICE Febrile Seizure Guidelines"
+  },
+  "anaemia": {
+    "display_name": "Anaemia",
+    "icd10": "D64",
+    "immediate_actions": [
+      "Assess severity: pallor of palms, tongue, conjunctiva",
+      "Check for severe anaemia: very pale palms with any fast breathing = emergency"
+    ],
+    "steps_community_health_post": [
+      "Assess pallor of palms, inner lower eyelid, tongue",
+      "Ask about diet, menstrual bleeding, worm symptoms",
+      "Give ferrous sulfate: adults 200mg 3x/day; children 3mg/kg/day elemental iron",
+      "Give folic acid alongside iron",
+      "Give mebendazole or albendazole for deworming",
+      "Advise on iron-rich foods",
+      "Treat malaria if positive"
+    ],
+    "steps_district_clinic": [
+      "Full blood count and blood film",
+      "Haemoglobin electrophoresis for suspected sickle cell",
+      "Blood transfusion for Hb below 5g/dL or any severe anaemia with symptoms"
+    ],
+    "supplies": ["ferrous sulfate", "folic acid", "mebendazole"],
+    "refer_if": [
+      "Severe anaemia: very pale palms with fast breathing, lethargic, or chest pain",
+      "Haemoglobin below 7g/dL on blood test",
+      "Suspected sickle cell crisis",
+      "Not responding to iron after 4 weeks"
+    ],
+    "follow_up_hours": 168,
+    "source": "WHO Guidelines for Prevention and Management of Anaemia 2023"
+  },
+  "neonatal_danger_signs": {
+    "display_name": "Sick Newborn / Neonatal Danger Signs",
+    "icd10": "P96",
+    "immediate_actions": [
+      "EMERGENCY — newborns with danger signs need immediate referral",
+      "Keep baby warm — skin-to-skin with mother if possible",
+      "Ensure airway is clear",
+      "Give first dose of IM ampicillin and gentamicin if available before referral"
+    ],
+    "steps_community_health_post": [
+      "Look for danger signs in first 7 days of life",
+      "Keep baby warm: skin-to-skin, dry and covered",
+      "Encourage breastfeeding",
+      "Give IM benzylpenicillin 50000 IU/kg if neonatal sepsis suspected",
+      "Refer immediately to hospital with baby kept warm during transport"
+    ],
+    "steps_district_clinic": [
+      "IV ampicillin and gentamicin for neonatal sepsis",
+      "Blood glucose, blood culture",
+      "Oxygen if breathing difficulties",
+      "Lumbar puncture if meningitis suspected"
+    ],
+    "supplies": ["clean cloth for warmth", "IM antibiotics if available", "transport"],
+    "danger_signs": [
+      "Not breathing or gasping",
+      "Not able to breastfeed",
+      "Convulsion",
+      "Temperature below 35.5°C or above 37.5°C",
+      "Pus from umbilicus with redness spreading to skin",
+      "Skin pustules",
+      "Bulging fontanelle",
+      "Jaundice in first 24 hours or involving palms and soles"
+    ],
+    "refer_if": ["Any danger sign — refer ALL sick newborns immediately"],
+    "follow_up_hours": 0,
+    "source": "WHO IMCI 2024 — Neonatal Section"
+  },
+  "urinary_tract_infection": {
+    "display_name": "Urinary Tract Infection (UTI)",
+    "icd10": "N39.0",
+    "immediate_actions": [
+      "Ask about fever — fever with UTI symptoms suggests kidney infection",
+      "Check for loin pain (upper UTI)"
+    ],
+    "steps_community_health_post": [
+      "Uncomplicated UTI (lower): dysuria, frequency, no fever",
+      "Give cotrimoxazole 960mg twice daily for 3 days (adults)",
+      "Or nitrofurantoin 100mg twice daily for 5 days if available",
+      "Encourage fluids — at least 2L/day",
+      "Advise personal hygiene",
+      "Urine dipstick if available: nitrites and leucocytes positive"
+    ],
+    "steps_district_clinic": [
+      "Urine culture and sensitivity",
+      "For pyelonephritis: IV antibiotics",
+      "Ultrasound if recurrent UTIs"
+    ],
+    "supplies": ["cotrimoxazole", "urine dipstick if available"],
+    "refer_if": [
+      "Fever above 38°C with UTI symptoms (pyelonephritis)",
+      "Loin pain and tenderness",
+      "Pregnant with UTI",
+      "Child under 5 with UTI",
+      "Male with UTI",
+      "Recurrent UTIs (more than 2 in 6 months)",
+      "No improvement after 3 days of antibiotics"
+    ],
+    "follow_up_hours": 72,
+    "source": "WHO Primary Health Care Guidelines 2024"
+  }
+}

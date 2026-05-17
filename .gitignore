@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+.venv311/
+venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Model weights / large binary files (download separately)
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.gguf
+models/
+
+# Logs and session data
+evaluation_results/demo_session_log.jsonl
+
+# Environment / secrets
+.env
+*.env
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/

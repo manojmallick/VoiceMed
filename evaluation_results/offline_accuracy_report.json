@@ -1,0 +1,437 @@
+{
+  "total_cases": 49,
+  "exact_accuracy_pct": 38.78,
+  "within_one_level_pct": 89.8,
+  "unknown_label_cases": 0,
+  "per_class": {
+    "SELF_CARE": {
+      "total": 10,
+      "exact_accuracy": 60.0
+    },
+    "MONITOR_48H": {
+      "total": 7,
+      "exact_accuracy": 14.29
+    },
+    "REFER_ROUTINE": {
+      "total": 7,
+      "exact_accuracy": 14.29
+    },
+    "REFER_URGENT": {
+      "total": 12,
+      "exact_accuracy": 41.67
+    },
+    "EMERGENCY": {
+      "total": 13,
+      "exact_accuracy": 46.15
+    }
+  },
+  "confusion_matrix": {
+    "EMERGENCY": {
+      "EMERGENCY": 6,
+      "REFER_URGENT": 7
+    },
+    "REFER_URGENT": {
+      "REFER_URGENT": 5,
+      "REFER_ROUTINE": 7
+    },
+    "REFER_ROUTINE": {
+      "REFER_ROUTINE": 1,
+      "SELF_CARE": 3,
+      "REFER_URGENT": 2,
+      "MONITOR_48H": 1
+    },
+    "MONITOR_48H": {
+      "REFER_ROUTINE": 1,
+      "REFER_URGENT": 1,
+      "SELF_CARE": 4,
+      "MONITOR_48H": 1
+    },
+    "SELF_CARE": {
+      "SELF_CARE": 6,
+      "REFER_ROUTINE": 1,
+      "MONITOR_48H": 3
+    }
+  },
+  "worst_misclassifications": [
+    {
+      "id": "R01",
+      "expected": "REFER_ROUTINE",
+      "predicted": "SELF_CARE",
+      "distance": 2,
+      "description": "Adult, 45 years, blood pressure measured 152/94 twice today. No headache, no other symptoms. Has never had hypertension treatment."
+    },
+    {
+      "id": "R03",
+      "expected": "REFER_ROUTINE",
+      "predicted": "SELF_CARE",
+      "distance": 2,
+      "description": "Adult, 55 years, cough for 4 weeks, night sweats, lost 5kg in 2 months. No fever today. HIV positive."
+    },
+    {
+      "id": "R04",
+      "expected": "REFER_ROUTINE",
+      "predicted": "SELF_CARE",
+      "distance": 2,
+      "description": "Child, 18 months, MUAC measured 112mm. Bilateral pitting oedema on feet. Eating, no fever, no danger signs."
+    },
+    {
+      "id": "M03",
+      "expected": "MONITOR_48H",
+      "predicted": "REFER_URGENT",
+      "distance": 2,
+      "description": "Child, 3 years, first febrile convulsion, seizure lasted 2 minutes, now alert and back to normal. Temperature 39.1\u00b0C."
+    },
+    {
+      "id": "S02",
+      "expected": "SELF_CARE",
+      "predicted": "REFER_ROUTINE",
+      "distance": 2,
+      "description": "Child, 7 years, itchy circular rash on arm for 5 days. No fever. Playing normally."
+    }
+  ],
+  "all_results": [
+    {
+      "id": "E01",
+      "expected": "EMERGENCY",
+      "predicted": "EMERGENCY",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "E02",
+      "expected": "EMERGENCY",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "E03",
+      "expected": "EMERGENCY",
+      "predicted": "EMERGENCY",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "E04",
+      "expected": "EMERGENCY",
+      "predicted": "EMERGENCY",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "E05",
+      "expected": "EMERGENCY",
+      "predicted": "EMERGENCY",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "E06",
+      "expected": "EMERGENCY",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "E07",
+      "expected": "EMERGENCY",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "E08",
+      "expected": "EMERGENCY",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "E09",
+      "expected": "EMERGENCY",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "E10",
+      "expected": "EMERGENCY",
+      "predicted": "EMERGENCY",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "U01",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_URGENT",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "U02",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_URGENT",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "U03",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_ROUTINE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "U04",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_URGENT",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "U05",
+      "expected": "EMERGENCY",
+      "predicted": "EMERGENCY",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "U06",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_ROUTINE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "U07",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_URGENT",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "U08",
+      "expected": "REFER_ROUTINE",
+      "predicted": "REFER_ROUTINE",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "U09",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_ROUTINE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "U10",
+      "expected": "EMERGENCY",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "R01",
+      "expected": "REFER_ROUTINE",
+      "predicted": "SELF_CARE",
+      "distance": 2,
+      "exact_match": false
+    },
+    {
+      "id": "R02",
+      "expected": "REFER_ROUTINE",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "R03",
+      "expected": "REFER_ROUTINE",
+      "predicted": "SELF_CARE",
+      "distance": 2,
+      "exact_match": false
+    },
+    {
+      "id": "R04",
+      "expected": "REFER_ROUTINE",
+      "predicted": "SELF_CARE",
+      "distance": 2,
+      "exact_match": false
+    },
+    {
+      "id": "R05",
+      "expected": "REFER_ROUTINE",
+      "predicted": "MONITOR_48H",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "M01",
+      "expected": "MONITOR_48H",
+      "predicted": "REFER_ROUTINE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "M02",
+      "expected": "SELF_CARE",
+      "predicted": "SELF_CARE",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "M03",
+      "expected": "MONITOR_48H",
+      "predicted": "REFER_URGENT",
+      "distance": 2,
+      "exact_match": false
+    },
+    {
+      "id": "M04",
+      "expected": "MONITOR_48H",
+      "predicted": "SELF_CARE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "M05",
+      "expected": "MONITOR_48H",
+      "predicted": "SELF_CARE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "S01",
+      "expected": "SELF_CARE",
+      "predicted": "SELF_CARE",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "S02",
+      "expected": "SELF_CARE",
+      "predicted": "REFER_ROUTINE",
+      "distance": 2,
+      "exact_match": false
+    },
+    {
+      "id": "S03",
+      "expected": "SELF_CARE",
+      "predicted": "MONITOR_48H",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "S04",
+      "expected": "SELF_CARE",
+      "predicted": "SELF_CARE",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "S05",
+      "expected": "SELF_CARE",
+      "predicted": "MONITOR_48H",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "S06",
+      "expected": "SELF_CARE",
+      "predicted": "SELF_CARE",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "S07",
+      "expected": "SELF_CARE",
+      "predicted": "SELF_CARE",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "S08",
+      "expected": "MONITOR_48H",
+      "predicted": "MONITOR_48H",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "S09",
+      "expected": "SELF_CARE",
+      "predicted": "SELF_CARE",
+      "distance": 0,
+      "exact_match": true
+    },
+    {
+      "id": "S10",
+      "expected": "MONITOR_48H",
+      "predicted": "SELF_CARE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "SW01",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_ROUTINE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "HI01",
+      "expected": "EMERGENCY",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "FR01",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_ROUTINE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "HA01",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_ROUTINE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "X01",
+      "expected": "MONITOR_48H",
+      "predicted": "SELF_CARE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "X02",
+      "expected": "REFER_ROUTINE",
+      "predicted": "REFER_URGENT",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "X03",
+      "expected": "SELF_CARE",
+      "predicted": "MONITOR_48H",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "X04",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_ROUTINE",
+      "distance": 1,
+      "exact_match": false
+    },
+    {
+      "id": "X05",
+      "expected": "REFER_URGENT",
+      "predicted": "REFER_URGENT",
+      "distance": 0,
+      "exact_match": true
+    }
+  ]
+}

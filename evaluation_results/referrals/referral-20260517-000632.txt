@@ -1,0 +1,7 @@
+Referral Note
+Patient: Unknown
+Severity: REFER_URGENT
+Clinical finding: having lot pain in abdomen
+
+[Image attached] size=1200x800, brightness_mean=110.1. Use image as supportive context only; prioritize clinical danger signs.
+Please assess and manage at the next available level of care.

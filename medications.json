@@ -1,0 +1,568 @@
+{
+  "paracetamol": {
+    "generic_name": "paracetamol",
+    "also_known_as": ["acetaminophen"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 500mg", "oral liquid 120mg/5mL", "suppository 100mg"],
+    "standard_doses": {
+      "adult": "500-1000mg every 4-6 hours, max 4g/day",
+      "child": "15mg/kg every 4-6 hours, max 60mg/kg/day"
+    },
+    "indications": ["fever", "mild pain", "headache"],
+    "contraindications": ["severe liver disease"],
+    "alternatives": ["ibuprofen"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "amoxicillin": {
+    "generic_name": "amoxicillin",
+    "also_known_as": ["amoxil"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["capsule 250mg", "capsule 500mg", "oral liquid 125mg/5mL", "oral liquid 250mg/5mL"],
+    "standard_doses": {
+      "adult": "250-500mg every 8 hours for 5-7 days",
+      "child": "25mg/kg/day in 3 divided doses"
+    },
+    "indications": ["pneumonia", "otitis media", "skin infection", "urinary tract infection"],
+    "contraindications": ["penicillin allergy"],
+    "alternatives": ["cotrimoxazole", "erythromycin"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "ibuprofen": {
+    "generic_name": "ibuprofen",
+    "also_known_as": ["nurofen"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 200mg", "tablet 400mg", "oral liquid 100mg/5mL"],
+    "standard_doses": {
+      "adult": "400mg every 6-8 hours with food, max 2400mg/day",
+      "child": "5-10mg/kg every 6-8 hours, max 40mg/kg/day"
+    },
+    "indications": ["fever", "pain", "inflammation"],
+    "contraindications": ["peptic ulcer", "renal impairment", "pregnancy third trimester", "children under 3 months"],
+    "alternatives": ["paracetamol"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "metronidazole": {
+    "generic_name": "metronidazole",
+    "also_known_as": ["flagyl"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 200mg", "tablet 400mg", "tablet 500mg"],
+    "standard_doses": {
+      "adult": "400-500mg every 8 hours for 5-7 days",
+      "child": "7.5mg/kg every 8 hours"
+    },
+    "indications": ["amoebic dysentery", "giardiasis", "anaerobic infections", "dental abscess"],
+    "contraindications": ["first trimester pregnancy", "alcohol consumption"],
+    "alternatives": ["tinidazole"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "cotrimoxazole": {
+    "generic_name": "sulfamethoxazole + trimethoprim",
+    "also_known_as": ["co-trimoxazole", "bactrim", "septrin"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 400mg+80mg", "tablet 800mg+160mg", "oral liquid 200mg+40mg/5mL"],
+    "standard_doses": {
+      "adult": "960mg every 12 hours for 5 days",
+      "child": "24mg/kg/day in 2 divided doses"
+    },
+    "indications": ["pneumonia", "urinary tract infection", "shigellosis", "HIV prophylaxis"],
+    "contraindications": ["sulfonamide allergy", "severe renal impairment", "megaloblastic anaemia"],
+    "alternatives": ["amoxicillin", "ciprofloxacin"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "oral_rehydration_salts": {
+    "generic_name": "oral rehydration salts",
+    "also_known_as": ["ORS", "ORT"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["sachet dissolved in 1L water"],
+    "standard_doses": {
+      "adult": "200-400mL after each loose stool",
+      "child": "50-100mL/kg over 3-4 hours for mild dehydration"
+    },
+    "indications": ["diarrhoea", "vomiting", "dehydration", "cholera"],
+    "contraindications": ["severe vomiting preventing oral intake", "ileus"],
+    "alternatives": ["IV fluids if severe"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "zinc_sulfate": {
+    "generic_name": "zinc sulfate",
+    "also_known_as": ["zinc"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["dispersible tablet 20mg"],
+    "standard_doses": {
+      "adult": "20mg once daily for 10-14 days",
+      "child": "10mg/day under 6 months; 20mg/day over 6 months for 10-14 days"
+    },
+    "indications": ["diarrhoea (adjunct to ORS)"],
+    "contraindications": [],
+    "alternatives": [],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "artemether_lumefantrine": {
+    "generic_name": "artemether + lumefantrine",
+    "also_known_as": ["coartem", "riamet"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 20mg+120mg"],
+    "standard_doses": {
+      "adult": "4 tablets at 0, 8, 24, 36, 48, 60 hours (6 doses total)",
+      "child": "weight-based: 5-14kg = 1 tablet per dose; 15-24kg = 2 tablets; 25-34kg = 3 tablets"
+    },
+    "indications": ["uncomplicated falciparum malaria"],
+    "contraindications": ["first trimester pregnancy", "severe malaria (use injectable)"],
+    "alternatives": ["artesunate + amodiaquine"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "Must be taken with food or milk fat for absorption"
+  },
+  "artesunate": {
+    "generic_name": "artesunate",
+    "also_known_as": [],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["injection 60mg vial", "rectal capsule 50mg", "rectal capsule 200mg"],
+    "standard_doses": {
+      "adult": "2.4mg/kg IV at 0, 12, 24 hours then daily",
+      "child": "3mg/kg IV (under 20kg)"
+    },
+    "indications": ["severe malaria"],
+    "contraindications": [],
+    "alternatives": ["quinine IV if artesunate unavailable"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "Refer to hospital — not for community health post level"
+  },
+  "amoxicillin_clavulanate": {
+    "generic_name": "amoxicillin + clavulanic acid",
+    "also_known_as": ["augmentin", "co-amoxiclav"],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["tablet 500mg+125mg", "oral liquid 125mg+31.25mg/5mL"],
+    "standard_doses": {
+      "adult": "625mg every 8 hours for 5-7 days",
+      "child": "25mg/kg/day amoxicillin component in 2-3 divided doses"
+    },
+    "indications": ["complicated skin infections", "animal bites", "chest infection with beta-lactamase organisms"],
+    "contraindications": ["penicillin allergy", "history of amoxicillin-clavulanate jaundice"],
+    "alternatives": ["amoxicillin", "cotrimoxazole"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "chlorhexidine": {
+    "generic_name": "chlorhexidine",
+    "also_known_as": ["hibitane"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["solution 0.05% topical", "solution 4% surgical scrub", "gel 7.1% umbilical"],
+    "standard_doses": {
+      "adult": "apply topically to wound twice daily",
+      "child": "same as adult"
+    },
+    "indications": ["wound cleaning", "skin antisepsis", "cord care in neonates"],
+    "contraindications": ["do not use in ears"],
+    "alternatives": ["povidone iodine"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "povidone_iodine": {
+    "generic_name": "povidone iodine",
+    "also_known_as": ["betadine"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["solution 10%", "ointment 10%"],
+    "standard_doses": {
+      "adult": "apply to wound once or twice daily",
+      "child": "same as adult, avoid prolonged use in neonates"
+    },
+    "indications": ["wound antisepsis", "skin infections"],
+    "contraindications": ["thyroid disease with prolonged use", "premature neonates"],
+    "alternatives": ["chlorhexidine"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "erythromycin": {
+    "generic_name": "erythromycin",
+    "also_known_as": ["eryc"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 250mg", "tablet 500mg", "oral liquid 125mg/5mL", "eye ointment 0.5%"],
+    "standard_doses": {
+      "adult": "250-500mg every 6 hours for 5-7 days",
+      "child": "30-50mg/kg/day in 4 divided doses"
+    },
+    "indications": ["pneumonia (penicillin allergy)", "whooping cough", "diphtheria", "conjunctivitis"],
+    "contraindications": ["QT prolongation", "liver disease"],
+    "alternatives": ["amoxicillin", "azithromycin"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "azithromycin": {
+    "generic_name": "azithromycin",
+    "also_known_as": ["zithromax"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 250mg", "tablet 500mg", "oral liquid 200mg/5mL"],
+    "standard_doses": {
+      "adult": "500mg day 1 then 250mg days 2-5",
+      "child": "10mg/kg day 1 then 5mg/kg days 2-5"
+    },
+    "indications": ["community-acquired pneumonia", "chlamydia", "typhoid fever (in some regions)"],
+    "contraindications": ["QT prolongation", "liver disease"],
+    "alternatives": ["erythromycin", "doxycycline"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "doxycycline": {
+    "generic_name": "doxycycline",
+    "also_known_as": ["vibramycin"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["capsule 100mg", "tablet 100mg"],
+    "standard_doses": {
+      "adult": "100mg every 12 hours for 5-7 days",
+      "child": "NOT for children under 8 years"
+    },
+    "indications": ["malaria prophylaxis", "leptospirosis", "rickettsia", "chlamydia"],
+    "contraindications": ["children under 8 years", "pregnancy", "breastfeeding"],
+    "alternatives": ["azithromycin", "erythromycin"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "ciprofloxacin": {
+    "generic_name": "ciprofloxacin",
+    "also_known_as": ["cipro"],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["tablet 250mg", "tablet 500mg"],
+    "standard_doses": {
+      "adult": "500mg every 12 hours for 3-7 days",
+      "child": "Use with caution — 10mg/kg every 12 hours"
+    },
+    "indications": ["urinary tract infection", "typhoid fever", "shigella dysentery"],
+    "contraindications": ["pregnancy", "children (caution)", "tendinopathy history"],
+    "alternatives": ["cotrimoxazole", "amoxicillin"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "Reserve for specific indications — avoid overuse"
+  },
+  "mebendazole": {
+    "generic_name": "mebendazole",
+    "also_known_as": ["vermox"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 100mg", "tablet 500mg", "oral liquid 100mg/5mL"],
+    "standard_doses": {
+      "adult": "500mg single dose (roundworm, hookworm, whipworm)",
+      "child": "same as adult for children over 1 year"
+    },
+    "indications": ["intestinal helminths", "soil-transmitted helminthiasis"],
+    "contraindications": ["pregnancy first trimester", "children under 1 year"],
+    "alternatives": ["albendazole"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "albendazole": {
+    "generic_name": "albendazole",
+    "also_known_as": ["zentel"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 400mg", "oral liquid 200mg/5mL"],
+    "standard_doses": {
+      "adult": "400mg single dose",
+      "child": "400mg single dose (over 2 years); 200mg single dose (1-2 years)"
+    },
+    "indications": ["intestinal helminths", "giardiasis", "hydatid disease"],
+    "contraindications": ["pregnancy", "children under 1 year"],
+    "alternatives": ["mebendazole"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "ferrous_sulfate": {
+    "generic_name": "ferrous sulfate",
+    "also_known_as": ["iron supplement", "fefol"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 200mg (65mg elemental iron)", "oral liquid 25mg/mL elemental iron"],
+    "standard_doses": {
+      "adult": "200mg 2-3 times daily (between meals)",
+      "child": "3-6mg/kg/day elemental iron in 2-3 divided doses"
+    },
+    "indications": ["iron deficiency anaemia", "pregnancy supplementation"],
+    "contraindications": ["haemochromatosis", "haemolytic anaemia"],
+    "alternatives": ["ferrous gluconate", "ferrous fumarate"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "folic_acid": {
+    "generic_name": "folic acid",
+    "also_known_as": ["folate", "vitamin B9"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 1mg", "tablet 5mg"],
+    "standard_doses": {
+      "adult": "5mg daily for megaloblastic anaemia; 0.4mg daily for pregnancy prevention",
+      "child": "1mg daily"
+    },
+    "indications": ["megaloblastic anaemia", "pregnancy (neural tube defect prevention)", "folate deficiency"],
+    "contraindications": ["undiagnosed B12 deficiency (may mask)"],
+    "alternatives": [],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "vitamin_a": {
+    "generic_name": "retinol (vitamin A)",
+    "also_known_as": ["vitamin A", "retinol"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["capsule 50000 IU", "capsule 100000 IU", "capsule 200000 IU"],
+    "standard_doses": {
+      "adult": "200000 IU for deficiency treatment",
+      "child": "100000 IU (6-11 months); 200000 IU (over 12 months) — single dose"
+    },
+    "indications": ["vitamin A deficiency", "measles", "night blindness"],
+    "contraindications": ["pregnancy (teratogenic at high doses)"],
+    "alternatives": [],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "hydrocortisone": {
+    "generic_name": "hydrocortisone",
+    "also_known_as": ["cortef"],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["cream 1%", "injection 100mg/2mL vial"],
+    "standard_doses": {
+      "adult": "1% cream applied twice daily; 100-500mg IV for emergency",
+      "child": "cream as adult; IV dose weight-based"
+    },
+    "indications": ["eczema", "allergic reactions", "adrenal insufficiency", "anaphylaxis (adjunct)"],
+    "contraindications": ["active infections (systemic)", "avoid face in children"],
+    "alternatives": ["betamethasone cream", "dexamethasone"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "salbutamol": {
+    "generic_name": "salbutamol",
+    "also_known_as": ["albuterol", "ventolin"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["inhaler 100mcg/dose", "oral liquid 2mg/5mL", "tablet 2mg", "tablet 4mg"],
+    "standard_doses": {
+      "adult": "2 puffs every 4-6 hours as needed (inhaler); 4mg 3-4 times daily (oral)",
+      "child": "1-2 puffs every 4-6 hours (inhaler); 0.1mg/kg every 6-8 hours (oral)"
+    },
+    "indications": ["asthma", "bronchospasm", "wheeze", "COPD exacerbation"],
+    "contraindications": ["hypokalaemia (caution)", "thyrotoxicosis"],
+    "alternatives": ["ipratropium for COPD"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "loratadine": {
+    "generic_name": "loratadine",
+    "also_known_as": ["claritin"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 10mg", "oral liquid 5mg/5mL"],
+    "standard_doses": {
+      "adult": "10mg once daily",
+      "child": "5mg once daily (2-12 years, under 30kg); 10mg once daily (over 30kg or 12+)"
+    },
+    "indications": ["allergic rhinitis", "urticaria", "allergic conjunctivitis"],
+    "contraindications": ["severe liver disease"],
+    "alternatives": ["cetirizine", "chlorphenamine"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "chlorphenamine": {
+    "generic_name": "chlorphenamine",
+    "also_known_as": ["chlorpheniramine", "piriton"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 4mg", "oral liquid 2mg/5mL"],
+    "standard_doses": {
+      "adult": "4mg every 4-6 hours, max 24mg/day",
+      "child": "0.1mg/kg every 6 hours"
+    },
+    "indications": ["allergic reactions", "urticaria", "anaphylaxis (adjunct)", "insect bites"],
+    "contraindications": ["glaucoma", "urinary retention", "children under 2"],
+    "alternatives": ["loratadine (non-sedating)"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "Causes drowsiness — caution when operating machinery"
+  },
+  "adrenaline": {
+    "generic_name": "epinephrine (adrenaline)",
+    "also_known_as": ["adrenaline", "epipen"],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["injection 1mg/mL (1:1000)", "autoinjector 0.3mg"],
+    "standard_doses": {
+      "adult": "0.5mg IM into outer thigh (anaphylaxis)",
+      "child": "0.01mg/kg IM, max 0.5mg"
+    },
+    "indications": ["anaphylaxis", "severe allergic reaction", "cardiac arrest"],
+    "contraindications": ["none in life-threatening emergency"],
+    "alternatives": [],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "EMERGENCY medication — refer immediately after giving"
+  },
+  "oxytocin": {
+    "generic_name": "oxytocin",
+    "also_known_as": ["syntocinon", "pitocin"],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["injection 10 IU/mL"],
+    "standard_doses": {
+      "adult": "10 IU IM after delivery of baby (postpartum haemorrhage prevention)"
+    },
+    "indications": ["postpartum haemorrhage prevention", "induction of labour"],
+    "contraindications": ["before delivery unless hospital setting"],
+    "alternatives": ["misoprostol (oral, easier at community level)"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "misoprostol": {
+    "generic_name": "misoprostol",
+    "also_known_as": ["cytotec"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["tablet 200mcg"],
+    "standard_doses": {
+      "adult": "600mcg orally (3 tablets) immediately after birth — postpartum haemorrhage prevention"
+    },
+    "indications": ["postpartum haemorrhage prevention (when oxytocin unavailable)"],
+    "contraindications": [],
+    "alternatives": ["oxytocin (preferred)"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "Key community-level PPH prevention tool — no refrigeration needed"
+  },
+  "magnesium_sulfate": {
+    "generic_name": "magnesium sulfate",
+    "also_known_as": ["mag sulfate", "MgSO4"],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["injection 500mg/mL (50%) in 2mL", "injection 500mg/mL (50%) in 10mL"],
+    "standard_doses": {
+      "adult": "4g IV loading then 1g/hour for eclampsia"
+    },
+    "indications": ["eclampsia", "pre-eclampsia", "hypomagnesaemia"],
+    "contraindications": ["renal failure", "respiratory depression"],
+    "alternatives": [],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "EMERGENCY — hospital level only. Refer immediately for eclampsia."
+  },
+  "diazepam": {
+    "generic_name": "diazepam",
+    "also_known_as": ["valium"],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["tablet 2mg", "tablet 5mg", "injection 5mg/mL", "rectal solution 2mg/mL"],
+    "standard_doses": {
+      "adult": "5-10mg rectal/IV for seizure",
+      "child": "0.3mg/kg rectal or IV for febrile seizure, max 10mg"
+    },
+    "indications": ["seizure", "eclampsia (adjunct)", "severe anxiety", "alcohol withdrawal"],
+    "contraindications": ["respiratory depression", "CNS depression", "myasthenia gravis"],
+    "alternatives": ["lorazepam", "midazolam"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "glucose": {
+    "generic_name": "glucose (dextrose)",
+    "also_known_as": ["dextrose", "sugar water"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["oral: sugar dissolved in water", "injection 50% in 50mL", "infusion 5% in 500mL"],
+    "standard_doses": {
+      "adult": "50mL of 50% dextrose IV for hypoglycaemia",
+      "child": "2mL/kg of 10% glucose IV; orally — give sugary drink if conscious"
+    },
+    "indications": ["hypoglycaemia", "IV fluid maintenance"],
+    "contraindications": [],
+    "alternatives": ["oral sugar solution if patient conscious"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "At community level: give sugar solution orally if patient can swallow"
+  },
+  "normal_saline": {
+    "generic_name": "sodium chloride 0.9%",
+    "also_known_as": ["normal saline", "NS", "NaCl 0.9%"],
+    "essential_medicine": true,
+    "community_health_post": false,
+    "formulations": ["infusion 500mL", "infusion 1000mL"],
+    "standard_doses": {
+      "adult": "500-1000mL IV bolus for dehydration/shock",
+      "child": "20mL/kg IV over 15-60 minutes for shock"
+    },
+    "indications": ["dehydration", "shock", "wound irrigation"],
+    "contraindications": [],
+    "alternatives": ["Ringer's lactate", "ORS if oral possible"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023",
+    "note": "Requires IV access — refer if IV not available at CHW level"
+  },
+  "gentian_violet": {
+    "generic_name": "crystal violet (gentian violet)",
+    "also_known_as": ["crystal violet", "GV"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["solution 0.5% topical", "solution 1% topical"],
+    "standard_doses": {
+      "adult": "apply once or twice daily to affected area",
+      "child": "same as adult"
+    },
+    "indications": ["fungal skin infections", "oral candidiasis (thrush)", "impetigo"],
+    "contraindications": ["mucous membranes (dilute form only)"],
+    "alternatives": ["clotrimazole cream"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "clotrimazole": {
+    "generic_name": "clotrimazole",
+    "also_known_as": ["canesten"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["cream 1%", "vaginal tablet 100mg", "vaginal tablet 500mg"],
+    "standard_doses": {
+      "adult": "cream: apply twice daily for 2-4 weeks; vaginal: 500mg single dose",
+      "child": "cream only — apply twice daily"
+    },
+    "indications": ["dermatophytosis (ringworm)", "vaginal candidiasis", "oral thrush (cream)"],
+    "contraindications": [],
+    "alternatives": ["gentian violet", "miconazole"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  },
+  "tetanus_toxoid": {
+    "generic_name": "tetanus toxoid vaccine",
+    "also_known_as": ["TT", "Td vaccine"],
+    "essential_medicine": true,
+    "community_health_post": true,
+    "formulations": ["injection 0.5mL dose"],
+    "standard_doses": {
+      "adult": "0.5mL IM — primary series 3 doses, boosters every 10 years",
+      "child": "part of DPT schedule"
+    },
+    "indications": ["tetanus prevention", "wound prophylaxis"],
+    "contraindications": ["severe allergic reaction to previous dose"],
+    "alternatives": ["tetanus immune globulin (if unimmunized and wounded)"],
+    "who_eml_2023": true,
+    "source": "WHO EML 23rd list 2023"
+  }
+}

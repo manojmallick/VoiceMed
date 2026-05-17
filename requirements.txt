@@ -1,0 +1,5 @@
+# Minimal dependencies for initial VoiceMed implementation
+# Add transformers/torch in the next milestone when model inference is enabled.
+gradio>=5.0.0
+SpeechRecognition>=3.10.4
+
