@@ -415,7 +415,7 @@ def transcribe_audio_to_text(
     except sr.UnknownValueError:
         return base, gr.update(), gr.update(), gr.update(), "Could not understand the audio."
     except sr.RequestError as exc:
-        return base, gr.update(), gr.update(), gr.update(), f"Speech service unavailable: {exc}"
+        return base, gr.update(), gr.update(), gr.update(), f"⚠️ Speech service unavailable (internet required for voice transcription): {exc}"
     except Exception as exc:
         return base, gr.update(), gr.update(), gr.update(), f"Transcription failed: {exc}"
 
@@ -572,7 +572,7 @@ def build_ui() -> gr.Blocks:
         gr.HTML("""
         <div class="vm-header">
           <h1>🩺 VoiceMed</h1>
-          <p>AI-powered clinical triage &nbsp;·&nbsp; Voice &amp; Vision &nbsp;·&nbsp; Offline-first</p>
+          <p>AI-powered clinical triage &nbsp;·&nbsp; Voice &amp; Vision &nbsp;·&nbsp; Offline-first inference</p>
         </div>
         """)
 
@@ -606,7 +606,7 @@ def build_ui() -> gr.Blocks:
 
         with gr.Column(elem_classes="vm-card"):
             audio_input = gr.Audio(
-                label="🎤 Voice note (optional)",
+                label="🎤 Voice note (optional) — requires internet for speech recognition",
                 sources=["microphone", "upload"],
                 type="filepath",
             )
@@ -614,6 +614,10 @@ def build_ui() -> gr.Blocks:
                 "🔊 Transcribe Voice to Text",
                 elem_id="transcribe-btn",
                 variant="secondary",
+            )
+            gr.Markdown(
+                "_Voice transcription uses Google Speech-to-Text (online). "
+                "On-device speech recognition is a planned feature for a future Gemma release._",
             )
             transcribe_status = gr.Markdown("", label="")
 
