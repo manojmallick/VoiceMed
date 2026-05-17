@@ -12,6 +12,12 @@ from typing import Any
 import gradio as gr
 import speech_recognition as sr
 from PIL import Image, ImageStat
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import cm
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image as RLImage, HRFlowable, Table, TableStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = PROJECT_ROOT / "src"
@@ -103,14 +109,154 @@ def _append_session_log(
         fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
 
-def _build_referral_file(referral_letter: str | None) -> str | None:
+SEVERITY_COLORS = {
+    "EMERGENCY":    colors.HexColor("#c92a2a"),
+    "REFER_URGENT": colors.HexColor("#d9480f"),
+    "REFER_ROUTINE":colors.HexColor("#e67700"),
+    "MONITOR_48H":  colors.HexColor("#2b8a3e"),
+    "SELF_CARE":    colors.HexColor("#1971c2"),
+}
+
+
+def _build_referral_pdf(
+    referral_letter: str | None,
+    data: dict,
+    image_path: str | None,
+    patient_name: str = "Unknown",
+) -> str | None:
     if not referral_letter:
         return None
     REFERRAL_DIR.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
-    path = REFERRAL_DIR / f"referral-{ts}.txt"
-    path.write_text(referral_letter, encoding="utf-8")
-    return str(path)
+    pdf_path = REFERRAL_DIR / f"referral-{ts}.pdf"
+
+    doc = SimpleDocTemplate(
+        str(pdf_path),
+        pagesize=A4,
+        leftMargin=2 * cm,
+        rightMargin=2 * cm,
+        topMargin=2 * cm,
+        bottomMargin=2 * cm,
+    )
+    styles = getSampleStyleSheet()
+    severity = data.get("severity", "UNKNOWN")
+    sev_color = SEVERITY_COLORS.get(severity, colors.grey)
+
+    title_style = ParagraphStyle(
+        "title",
+        parent=styles["Heading1"],
+        textColor=colors.HexColor("#0d3b3e"),
+        fontSize=18,
+        spaceAfter=4,
+    )
+    subtitle_style = ParagraphStyle(
+        "subtitle",
+        parent=styles["Normal"],
+        textColor=colors.grey,
+        fontSize=9,
+        spaceAfter=12,
+    )
+    body_style = ParagraphStyle(
+        "body",
+        parent=styles["Normal"],
+        fontSize=10,
+        leading=16,
+        spaceAfter=8,
+    )
+    label_style = ParagraphStyle(
+        "label",
+        parent=styles["Normal"],
+        fontSize=9,
+        textColor=colors.grey,
+        spaceAfter=2,
+    )
+
+    story = []
+
+    # ── Header ────────────────────────────────────────────────────
+    story.append(Paragraph("🩺 VoiceMed — Clinical Referral Letter", title_style))
+    story.append(Paragraph(
+        f"Patient: <b>{patient_name}</b> &nbsp;&nbsp;·&nbsp;&nbsp;"
+        f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}  ·  "
+        "AI-assisted triage · For clinician review",
+        subtitle_style,
+    ))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#0d3b3e")))
+    story.append(Spacer(1, 0.4 * cm))
+
+    # ── Severity badge table ───────────────────────────────────────
+    badge_data = [[Paragraph(
+        f"<b>SEVERITY: {severity}</b>",
+        ParagraphStyle("badge", fontSize=13, textColor=colors.white),
+    )]]
+    badge_table = Table(badge_data, colWidths=[doc.width])
+    badge_table.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, -1), sev_color),
+        ("ROUNDEDCORNERS", [8]),
+        ("TOPPADDING", (0, 0), (-1, -1), 10),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
+        ("LEFTPADDING", (0, 0), (-1, -1), 14),
+    ]))
+    story.append(badge_table)
+    story.append(Spacer(1, 0.5 * cm))
+
+    # ── Clinical image (if provided) ───────────────────────────────
+    if image_path:
+        try:
+            img = Image.open(image_path)
+            max_w, max_h = 12 * cm, 8 * cm
+            ratio = min(max_w / img.width, max_h / img.height)
+            rl_img = RLImage(image_path, width=img.width * ratio, height=img.height * ratio)
+            story.append(Paragraph("Clinical Image", label_style))
+            story.append(rl_img)
+            story.append(Spacer(1, 0.4 * cm))
+        except Exception:
+            pass
+
+    # ── Letter body ────────────────────────────────────────────────
+    story.append(Paragraph("Referral Details", label_style))
+    story.append(HRFlowable(width="100%", thickness=0.5, color=colors.lightgrey))
+    story.append(Spacer(1, 0.2 * cm))
+    for line in referral_letter.splitlines():
+        if line.strip():
+            story.append(Paragraph(line, body_style))
+
+    story.append(Spacer(1, 0.5 * cm))
+
+    # ── Recommended actions ────────────────────────────────────────
+    actions = data.get("recommended_actions", [])
+    if actions:
+        story.append(Paragraph("Recommended Actions", label_style))
+        story.append(HRFlowable(width="100%", thickness=0.5, color=colors.lightgrey))
+        story.append(Spacer(1, 0.2 * cm))
+        for action in actions[:6]:
+            story.append(Paragraph(f"• {action}", body_style))
+
+    # ── Red flags ─────────────────────────────────────────────────
+    red_flags = data.get("red_flags", [])
+    if red_flags:
+        story.append(Spacer(1, 0.3 * cm))
+        story.append(Paragraph("Red Flags", label_style))
+        story.append(HRFlowable(width="100%", thickness=0.5, color=colors.lightgrey))
+        story.append(Spacer(1, 0.2 * cm))
+        flag_text = ",  ".join(f"⚠ {f}" for f in red_flags)
+        story.append(Paragraph(flag_text, ParagraphStyle(
+            "flags", parent=body_style, textColor=colors.HexColor("#c92a2a")
+        )))
+
+    # ── Footer ────────────────────────────────────────────────────
+    story.append(Spacer(1, 0.8 * cm))
+    story.append(HRFlowable(width="100%", thickness=0.5, color=colors.lightgrey))
+    story.append(Paragraph(
+        "This referral was generated by VoiceMed AI triage assistant. "
+        "It is intended to support — not replace — clinical judgment. "
+        "A qualified clinician must review and confirm all decisions.",
+        ParagraphStyle("footer", parent=styles["Normal"], fontSize=8,
+                       textColor=colors.grey, leading=11),
+    ))
+
+    doc.build(story)
+    return str(pdf_path)
 
 
 def _build_summary(data: dict) -> str:
@@ -142,28 +288,141 @@ def _image_context(image_path: str | None) -> str:
         return "\n\n[Image attached but unreadable]"
 
 
-def transcribe_audio_to_text(audio_path: str | None, current_text: str | None) -> tuple[str, str]:
+import re as _re
+
+
+def _parse_voice_fields(transcript: str) -> tuple[str, str, int | None, float | None]:
+    """Extract name / age / weight from transcript; return (symptoms, name, age, weight)."""
+    t = transcript.strip()
+    name: str = ""
+    age: int | None = None
+    weight: float | None = None
+
+    # ── Name: flexible patterns for natural speech ────────────────
+    # Handles: "patient name is Mary", "name is Mary", "my name is Mary",
+    #          "patient Mary", "for patient Mary Achieng", "called Mary"
+    # Stop words prevent absorbing "age is" / "weight" etc. into the name
+    _STOP = r"(?:age[d]?|weight|is\s|has|the|and|with|having|weeks?|years?|kg|percent|patient)"
+    name_match = _re.search(
+        r"(?:"
+        r"(?:(?:the\s+)?patient(?:'s)?\s+name\s+is|name\s+is|my\s+name\s+is|patient\s+name\s*:?)\s+"
+        r"|(?:for\s+patient|patient)\s+"
+        r"|called\s+"
+        r")([A-Za-z]+(?:\s+(?!" + _STOP + r")[A-Za-z]+){0,2})",
+        t,
+        _re.IGNORECASE,
+    )
+    if name_match:
+        raw_name = name_match.group(1).strip()
+        # Reject single stop/filler words that aren't names
+        if raw_name.lower() not in {"a", "an", "the", "is", "has", "she", "he", "age", "aged"}:
+            name = raw_name.title()
+
+    # ── Age: flexible patterns ────────────────────────────────────
+    # Handles: "32 years old", "aged 32", "age 32", "she is 32 years",
+    #          "35-year-old", "35 yr old"
+    age_match = _re.search(
+        r"(\d{1,3})\s*[\-\s]?(?:year[s]?[\-\s]old|yr[s]?[\-\s]old|years?\s+old)|"  # 32 years old
+        r"(?:aged?|age\s+is|is\s+aged?)\s+(\d{1,3})|"  # aged 32 / age is 32
+        r"(\d{1,3})\s+(?:year[s]?|yr[s]?)\s+(?:old|of\s+age)",  # 32 years of age
+        t, _re.IGNORECASE,
+    )
+    if age_match:
+        raw_age = next(g for g in age_match.groups() if g is not None)
+        v = int(raw_age)
+        if 0 < v <= 120:
+            age = v
+
+    # ── Weight: flexible patterns ─────────────────────────────────
+    # Handles: "65 kg", "weighs 65", "65 kilos", "weight is 65"
+    weight_match = _re.search(
+        r"(\d{1,3}(?:\.\d)?)\s*(?:kg|kgs|kilos?|kilograms?)|"  # 65 kg
+        r"(?:weigh[s]?|weight\s+(?:is|of))\s+(\d{1,3}(?:\.\d)?)|"  # weighs 65
+        r"(?:weighing)\s+(\d{1,3}(?:\.\d)?)",  # weighing 65
+        t, _re.IGNORECASE,
+    )
+    if weight_match:
+        raw_w = next(g for g in weight_match.groups() if g is not None)
+        w = float(raw_w)
+        if 0 < w < 300:
+            weight = w
+
+    # ── Strip extracted metadata fragments, keep clinical symptoms ─
+    symptoms = t
+    # Remove name fragment
+    if name:
+        symptoms = _re.sub(
+            r"(?:(?:the\s+)?patient(?:'s)?\s+name\s+is|name\s+is|my\s+name\s+is|patient\s+name\s*:?|for\s+patient|called)\s+" + _re.escape(name),
+            "", symptoms, flags=_re.IGNORECASE,
+        )
+        # Also try removing bare name if it appears near the start
+        symptoms = _re.sub(r"^\s*" + _re.escape(name) + r"\s*[,\.\s]", "", symptoms, flags=_re.IGNORECASE)
+    # Remove age fragment
+    if age:
+        symptoms = _re.sub(
+            r"\b" + str(age) + r"\s*[\-\s]?(?:year[s]?[\-\s]old|yr[s]?[\-\s]old|years?\s+old|year[s]?|yr[s]?)",
+            "", symptoms, flags=_re.IGNORECASE,
+        )
+        symptoms = _re.sub(r"(?:aged?|age\s+is)\s+" + str(age), "", symptoms, flags=_re.IGNORECASE)
+    # Remove weight fragment
+    if weight:
+        wstr = str(int(weight)) if weight == int(weight) else str(weight)
+        symptoms = _re.sub(
+            r"\b" + wstr + r"\s*(?:kg|kgs|kilos?|kilograms?)",
+            "", symptoms, flags=_re.IGNORECASE,
+        )
+        symptoms = _re.sub(r"(?:weigh[s]?|weight\s+(?:is|of)|weighing)\s+" + wstr, "", symptoms, flags=_re.IGNORECASE)
+    # Tidy up filler words and punctuation
+    symptoms = _re.sub(r"\b(?:she|he)\s+is\b", "", symptoms, flags=_re.IGNORECASE)
+    symptoms = _re.sub(r"\s*,\s*,", ",", symptoms)
+    symptoms = _re.sub(r"^[\s,\.and]+|[\s,\.]+$", "", symptoms)
+    symptoms = _re.sub(r"\s{2,}", " ", symptoms)
+
+    return symptoms, name, age, weight
+
+
+def transcribe_audio_to_text(
+    audio_path: str | None,
+    current_text: str | None,
+) -> tuple[str, str, int | None, float | None, str]:
+    """Transcribe audio and extract name/age/weight into separate fields."""
     base = (current_text or "").strip()
     if not audio_path:
-        return base, "No audio file provided."
+        return base, "", None, None, "No audio file provided."
 
     recognizer = sr.Recognizer()
     try:
         with sr.AudioFile(audio_path) as source:
             audio_data = recognizer.record(source)
         transcript = recognizer.recognize_google(audio_data)
-        merged = f"{base}\n{transcript}".strip() if base else transcript
-        return merged, "Voice transcription completed."
+        symptoms, name, age, weight = _parse_voice_fields(transcript)
+        merged = f"{base}\n{symptoms}".strip() if base else symptoms
+        status_parts = ["✅ Transcription done"]
+        if name:
+            status_parts.append(f"name: **{name}**")
+        if age is not None:
+            status_parts.append(f"age: **{age}**")
+        if weight is not None:
+            status_parts.append(f"weight: **{weight} kg**")
+        # Use gr.update() for undetected fields so existing values aren't overwritten
+        return (
+            merged,
+            gr.update(value=name) if name else gr.update(),
+            gr.update(value=age) if age is not None else gr.update(),
+            gr.update(value=weight) if weight is not None else gr.update(),
+            "  ·  ".join(status_parts),
+        )
     except sr.UnknownValueError:
-        return base, "Could not understand the audio."
+        return base, gr.update(), gr.update(), gr.update(), "Could not understand the audio."
     except sr.RequestError as exc:
-        return base, f"Speech service unavailable: {exc}"
+        return base, gr.update(), gr.update(), gr.update(), f"Speech service unavailable: {exc}"
     except Exception as exc:
-        return base, f"Transcription failed: {exc}"
+        return base, gr.update(), gr.update(), gr.update(), f"Transcription failed: {exc}"
 
 
 def assess_case(
     text: str,
+    patient_name: str | None,
     age: float | None,
     weight: float | None,
     image_path: str | None,
@@ -180,6 +439,7 @@ def assess_case(
     parsed_age = int(age) if age is not None else None
     parsed_weight = float(weight) if weight is not None else None
     final_text = text.strip() + _image_context(image_path)
+    name = (patient_name or "").strip() or "Unknown"
 
     result = ENGINE.triage(
         text_description=final_text,
@@ -189,12 +449,18 @@ def assess_case(
     data = result.to_dict()
     data["_debug"] = ENGINE.get_debug_snapshot()
 
+    # Substitute patient name in the referral letter generated by the engine
+    if data.get("referral_letter"):
+        data["referral_letter"] = data["referral_letter"].replace(
+            "Patient: Unknown", f"Patient: {name}"
+        )
+
     try:
         _append_session_log(final_text, parsed_age, parsed_weight, data, image_path, audio_path)
     except Exception as exc:
         data.setdefault("_debug", {})["log_error"] = str(exc)
 
-    referral_file = _build_referral_file(data.get("referral_letter"))
+    referral_file = _build_referral_pdf(data.get("referral_letter"), data, image_path, name)
     summary_md = _build_summary(data)
 
     html = [
@@ -212,69 +478,185 @@ def assess_case(
     return "\n".join(html), data, summary_md, referral_file
 
 
+MOBILE_CSS = """
+/* ── Mobile-first base ───────────────────────────────── */
+body, .gradio-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.gradio-container > .main {
+    padding: 8px !important;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+.vm-header {
+    background: linear-gradient(135deg, #0d3b3e 0%, #1a6b6e 100%);
+    color: white;
+    border-radius: 14px;
+    padding: 16px 18px 12px;
+    margin-bottom: 12px;
+}
+.vm-header h1 {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+.vm-header p {
+    margin: 0;
+    font-size: 0.82rem;
+    opacity: 0.85;
+}
+
+/* ── Section cards ───────────────────────────────────── */
+.vm-card {
+    background: #1e1e2e;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #2a2a3e;
+}
+
+/* ── Big tap-friendly buttons ────────────────────────── */
+#transcribe-btn, #assess-btn {
+    min-height: 52px !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    margin-top: 6px !important;
+}
+#assess-btn {
+    background: #1a6b6e !important;
+    font-size: 1.1rem !important;
+    min-height: 58px !important;
+}
+
+/* ── Severity result card ────────────────────────────── */
+.vm-result {
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 4px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+/* ── Examples table — horizontal scroll on small screens */
+.gr-examples table {
+    font-size: 0.78rem;
+    display: block;
+    overflow-x: auto;
+}
+
+/* ── Inputs: larger touch area ───────────────────────── */
+input, textarea, select {
+    font-size: 16px !important;   /* prevents iOS zoom on focus */
+}
+
+/* ── Hide raw JSON on mobile by default (collapsible) ── */
+@media (max-width: 600px) {
+    .vm-raw { display: none; }
+    .vm-raw.open { display: block; }
+}
+
+/* ── Compact number fields ───────────────────────────── */
+.vm-row-numbers .gr-form { gap: 8px !important; }
+"""
+
+
 def build_ui() -> gr.Blocks:
-    with gr.Blocks(title="VoiceMed Offline Triage") as app:
-        gr.Markdown("# VoiceMed Offline Triage Demo")
-        gr.Markdown(
-            "Use this quick UI for demo runs. It works with the current offline engine and optional model fallback path."
-        )
-        gr.Markdown(
-            "Set VOICEMED_DEBUG=true to include detailed runtime diagnostics in the Raw JSON output (_debug)."
-        )
+    with gr.Blocks(title="VoiceMed — AI Triage") as app:
+
+        # ── Header ────────────────────────────────────────────
+        gr.HTML("""
+        <div class="vm-header">
+          <h1>🩺 VoiceMed</h1>
+          <p>AI-powered clinical triage &nbsp;·&nbsp; Voice &amp; Vision &nbsp;·&nbsp; Offline-first</p>
+        </div>
+        """)
+
         gr.HTML(backend_status_html())
 
-        with gr.Row():
-            with gr.Column(scale=2):
-                text = gr.Textbox(
-                    label="Clinical description",
-                    lines=6,
-                    placeholder="Example: Adult with chest pain and shortness of breath for 1 hour",
-                )
-                image_input = gr.Image(
-                    label="Optional clinical image",
-                    type="filepath",
-                )
-                audio_input = gr.Audio(
-                    label="Optional voice note",
-                    sources=["microphone", "upload"],
-                    type="filepath",
-                )
-                with gr.Row():
-                    transcribe_btn = gr.Button("Transcribe Voice to Text")
-                    transcribe_status = gr.Markdown("")
-                with gr.Row():
-                    age = gr.Number(label="Age (years)", precision=0)
-                    weight = gr.Number(label="Weight (kg)")
-                submit = gr.Button("Assess Patient", variant="primary")
-            with gr.Column(scale=2):
-                summary = gr.HTML(label="Assessment")
-                raw = gr.JSON(label="Raw JSON output")
-                quick_summary = gr.Markdown(label="Quick Summary")
-                referral_file = gr.File(label="Referral Letter File")
+        # ── Input section ─────────────────────────────────────
+        with gr.Column(elem_classes="vm-card"):
+            patient_name = gr.Textbox(
+                label="👤 Patient name (optional)",
+                lines=1,
+                placeholder="e.g. Mary Achieng — appears on the referral letter",
+            )
+            text = gr.Textbox(
+                label="📋 Clinical description",
+                lines=4,
+                max_lines=8,
+                placeholder="Describe the patient's symptoms, e.g.:\nAdult with chest pain and shortness of breath for 1 hour",
+            )
 
+            with gr.Row(elem_classes="vm-row-numbers"):
+                age = gr.Number(label="Age (years)", precision=0, maximum=120, scale=1, value=None)
+                weight = gr.Number(label="Weight (kg)", maximum=300, scale=1, value=None)
+
+        # ── Image + Voice side by side on wide, stacked on mobile
+        with gr.Column(elem_classes="vm-card"):
+            image_input = gr.Image(
+                label="📷 Clinical image (optional)",
+                type="filepath",
+                height=180,
+            )
+
+        with gr.Column(elem_classes="vm-card"):
+            audio_input = gr.Audio(
+                label="🎤 Voice note (optional)",
+                sources=["microphone", "upload"],
+                type="filepath",
+            )
+            transcribe_btn = gr.Button(
+                "🔊 Transcribe Voice to Text",
+                elem_id="transcribe-btn",
+                variant="secondary",
+            )
+            transcribe_status = gr.Markdown("", label="")
+
+        submit = gr.Button("Assess Patient →", variant="primary", elem_id="assess-btn")
+
+        # ── Results ───────────────────────────────────────────
+        with gr.Column(elem_classes="vm-card"):
+            summary = gr.HTML(label="Assessment Result")
+            quick_summary = gr.Markdown(label="")
+            referral_file = gr.File(label="📄 Referral Letter (PDF)")
+
+        # ── Raw JSON (collapsed on mobile) ────────────────────
+        with gr.Accordion("🔧 Raw JSON output", open=False):
+            raw = gr.JSON(label="")
+
+        # ── Examples ──────────────────────────────────────────
+        gr.Markdown("### Try an example")
         examples = gr.Examples(
             examples=[
                 ["Adult with chest pain and shortness of breath for 1 hour", 45, None],
-                ["Small clean cut on finger, bleeding stopped", 28, None],
+                ["Pregnant woman 32 weeks, severe headache and blurred vision", 29, None],
                 ["Child with fever for 2 days and fast breathing", 5, 18],
+                ["Small clean cut on finger, bleeding stopped", 28, None],
+                ["Adult with mild sore throat for 3 days, no fever, eating well", 34, None],
             ],
             inputs=[text, age, weight],
+            label="",
         )
 
+        # ── Events ────────────────────────────────────────────
         transcribe_btn.click(
             fn=transcribe_audio_to_text,
             inputs=[audio_input, text],
-            outputs=[text, transcribe_status],
+            outputs=[text, patient_name, age, weight, transcribe_status],
         )
-
         submit.click(
             fn=assess_case,
-            inputs=[text, age, weight, image_input, audio_input],
+            inputs=[text, patient_name, age, weight, image_input, audio_input],
             outputs=[summary, raw, quick_summary, referral_file],
         )
         text.submit(
             fn=assess_case,
-            inputs=[text, age, weight, image_input, audio_input],
+            inputs=[text, patient_name, age, weight, image_input, audio_input],
             outputs=[summary, raw, quick_summary, referral_file],
         )
         _ = examples
@@ -297,7 +679,13 @@ def main() -> None:
         server_name=args.host,
         server_port=args.port,
         share=args.share,
-        theme=gr.themes.Soft(),
+        css=MOBILE_CSS,
+        theme=gr.themes.Soft(
+            primary_hue="teal",
+            secondary_hue="blue",
+            neutral_hue="slate",
+            font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "sans-serif"],
+        ),
     )
 
 

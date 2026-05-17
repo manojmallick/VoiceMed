@@ -2,4 +2,5 @@
 # Add transformers/torch in the next milestone when model inference is enabled.
 gradio>=5.0.0
 SpeechRecognition>=3.10.4
+reportlab>=4.0.0
 
