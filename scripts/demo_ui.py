@@ -869,11 +869,32 @@ def build_ui() -> gr.Blocks:
                 var text = el.getAttribute('data-text');
                 var lang = el.getAttribute('data-lang') || 'en-US';
                 if (!text) return;
-                window.speechSynthesis.cancel();
-                var u = new SpeechSynthesisUtterance(text);
-                u.lang = lang;
-                u.onerror = function(e) { console.error('[VoiceMed TTS error]', e.error); };
-                window.speechSynthesis.speak(u);
+
+                function doSpeak() {
+                    window.speechSynthesis.cancel();
+                    var u = new SpeechSynthesisUtterance(text);
+                    u.lang = lang;
+                    // Pick a matching voice so Chrome doesn't go silent
+                    var voices = window.speechSynthesis.getVoices();
+                    var langPrefix = lang.split('-')[0];
+                    var voice = voices.find(function(v) { return v.lang === lang; })
+                             || voices.find(function(v) { return v.lang.startsWith(langPrefix); });
+                    if (voice) u.voice = voice;
+                    u.onerror = function(e) { console.error('[VoiceMed TTS]', e.error); };
+                    window.speechSynthesis.speak(u);
+                }
+
+                // Chrome loads voices async — wait if not ready yet
+                var voices = window.speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    doSpeak();
+                } else {
+                    window.speechSynthesis.onvoiceschanged = function() {
+                        window.speechSynthesis.onvoiceschanged = null;
+                        doSpeak();
+                    };
+                    setTimeout(doSpeak, 300); // fallback if event never fires
+                }
             }""",
         )
         stop_btn.click(
