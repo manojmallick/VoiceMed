@@ -8,6 +8,7 @@
 
 ---
 
+
 ## 🎯 Overview
 
 **VoiceMed** is an open-source clinical decision support system designed for community health workers (CHWs) and healthcare providers in resource-limited settings. It enables:
@@ -28,7 +29,40 @@ Approximately **800 million people** live more than 1 hour from a hospital. Comm
 - Ability to work offline in areas with unreliable connectivity
 - Low-cost, scalable solutions
 
+
 VoiceMed addresses this gap by putting AI-powered clinical intelligence directly in the hands of CHWs.
+
+---
+
+## 🖼️ Demo
+
+Below are screenshots of the VoiceMed system in action:
+
+### 1. Dashboard & Input Form
+![Dashboard and Input Form](screens/01-voicemed-dashboard.png)
+
+### 2. Example: Input with Clinical Image
+![Input with Clinical Image](screens/03-input-with-image.png)
+
+### 3. Example: Clinical Referral Letter (PDF Preview)
+![Referral Letter](screens/02-referal-letter.png)
+
+### 4. Triage Result: Self-Care
+![Self-Care Result](screens/06-result-self-care.png)
+
+### 5. Triage Result: Emergency
+![Emergency Result](screens/05-result-emergenices.png)
+
+### 6. Triage Result: Urgent Referral
+![Urgent Referral Result](screens/07-result-urgent-referral.png)
+
+### 7. Triage Result: Routine Referral
+![Routine Referral Result](screens/08-result-routine-referal.png)
+
+### 8. Triage Result: Monitor 48H
+![Monitor 48H Result](screens/04-result-monitor48h.png)
+
+---
 
 ---
 
