@@ -148,17 +148,17 @@ def _translate_via_ollama(items: list[str], lang: str) -> list[str]:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=60) as resp:
             body = json.loads(resp.read().decode("utf-8"))
         raw = body.get("response", "").strip()
         # Parse numbered lines back out
+        import re as _re2
         translated = []
         for line in raw.splitlines():
             line = line.strip()
             if not line:
                 continue
             # Strip leading "1. " / "2. " etc.
-            import re as _re2
             cleaned = _re2.sub(r"^\d+\.\s*", "", line)
             if cleaned:
                 translated.append(cleaned)
@@ -167,7 +167,9 @@ def _translate_via_ollama(items: list[str], lang: str) -> list[str]:
             return translated
         # Partial — pad with originals
         return translated + items[len(translated):]
-    except Exception:
+    except Exception as _exc:
+        import sys
+        print(f"[VoiceMed] Translation error: {_exc}", file=sys.stderr)
         return items
 
 
@@ -567,10 +569,11 @@ def assess_case(
     image_path: str | None,
     audio_path: str | None,
     language: str = "English",
-) -> tuple[str, dict, str, str | None]:
+) -> tuple[str, dict, str, str | None, str, str]:
     lang = LANGUAGES.get(language or "English", "en")
     lbl = UI_LABELS.get(lang, UI_LABELS["en"])
     adv_map = ADVICE_TRANSLATIONS.get(lang, ADVICE_TRANSLATIONS["en"])
+    speech_lang_code = SPEECH_LANG.get(lang, "en-US")
 
     if not text or not text.strip():
         return (
@@ -578,6 +581,8 @@ def assess_case(
             {"ok": False, "error": "empty_text"},
             "### Quick Summary\n- No input provided",
             None,
+            "",
+            speech_lang_code,
         )
 
     parsed_age = int(age) if age is not None else None
@@ -633,31 +638,15 @@ def assess_case(
     if data.get("referral_letter"):
         html.append(f"<p style='{C}'><b>{lbl['referral']}:</b> {lbl['yes']}</p>")
 
-    # ── TTS read-aloud button ──────────────────────────────────────
+    # ── TTS text for client-side read-aloud ─────────────────────
     speak_parts = [
         SEVERITY_LABELS.get(lang, SEVERITY_LABELS["en"]).get(severity, severity),
         primary_concern,
         local_advice,
     ] + actions[:3]
     speak_text = ". ".join(p for p in speak_parts if p)
-    speak_js = json.dumps(speak_text)  # properly escaped for JS string
-    speech_lang_code = SPEECH_LANG.get(lang, "en-US")
-    btn_style = (
-        "margin-top:12px;padding:8px 18px;border-radius:8px;"
-        "border:1px solid #1a6b6e;background:transparent;"
-        "color:#a0c4c6;cursor:pointer;font-size:0.9rem;margin-right:8px"
-    )
-    html.append(
-        f"<button style='{btn_style}' "
-        f"onclick=\"(function(){{var u=new SpeechSynthesisUtterance({speak_js});"
-        f"u.lang='{speech_lang_code}';"
-        f"window.speechSynthesis.cancel();"
-        f"window.speechSynthesis.speak(u);}})()\">"
-        f"🔊 Read Aloud</button>"
-        f"<button style='{btn_style}' onclick='window.speechSynthesis.cancel()'>⏹ Stop</button>"
-    )
 
-    return "\n".join(html), data, summary_md, referral_file
+    return "\n".join(html), data, summary_md, referral_file, speak_text, speech_lang_code
 
 
 MOBILE_CSS = """
@@ -823,6 +812,11 @@ def build_ui() -> gr.Blocks:
             summary = gr.HTML(label="Assessment Result")
             quick_summary = gr.Markdown(label="")
             referral_file = gr.File(label="📄 Referral Letter (PDF)")
+            with gr.Row():
+                read_aloud_btn = gr.Button("🔊 Read Aloud", variant="secondary", scale=1)
+                stop_btn = gr.Button("⏹ Stop", variant="secondary", scale=1)
+            tts_text = gr.State("")
+            tts_lang = gr.State("en-US")
 
         # ── Raw JSON (collapsed on mobile) ────────────────────
         with gr.Accordion("🔧 Raw JSON output", open=False):
@@ -851,12 +845,24 @@ def build_ui() -> gr.Blocks:
         submit.click(
             fn=assess_case,
             inputs=[text, patient_name, age, weight, image_input, audio_input, language],
-            outputs=[summary, raw, quick_summary, referral_file],
+            outputs=[summary, raw, quick_summary, referral_file, tts_text, tts_lang],
         )
         text.submit(
             fn=assess_case,
             inputs=[text, patient_name, age, weight, image_input, audio_input, language],
-            outputs=[summary, raw, quick_summary, referral_file],
+            outputs=[summary, raw, quick_summary, referral_file, tts_text, tts_lang],
+        )
+        read_aloud_btn.click(
+            fn=None,
+            inputs=[tts_text, tts_lang],
+            outputs=[],
+            js="(text, lang) => { if (!text) return; var u = new SpeechSynthesisUtterance(text); u.lang = lang; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }",
+        )
+        stop_btn.click(
+            fn=None,
+            inputs=[],
+            outputs=[],
+            js="() => { window.speechSynthesis.cancel(); }",
         )
         _ = examples
 
