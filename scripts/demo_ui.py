@@ -815,8 +815,8 @@ def build_ui() -> gr.Blocks:
             with gr.Row():
                 read_aloud_btn = gr.Button("🔊 Read Aloud", variant="secondary", scale=1)
                 stop_btn = gr.Button("⏹ Stop", variant="secondary", scale=1)
-            tts_text = gr.State("")
-            tts_lang = gr.State("en-US")
+            tts_text = gr.Textbox(value="", visible=False, elem_id="vm-tts-text", label="")
+            tts_lang = gr.Textbox(value="en-US", visible=False, elem_id="vm-tts-lang", label="")
 
         # ── Raw JSON (collapsed on mobile) ────────────────────
         with gr.Accordion("🔧 Raw JSON output", open=False):
@@ -854,9 +854,19 @@ def build_ui() -> gr.Blocks:
         )
         read_aloud_btn.click(
             fn=None,
-            inputs=[tts_text, tts_lang],
+            inputs=[],
             outputs=[],
-            js="(text, lang) => { if (!text) return; var u = new SpeechSynthesisUtterance(text); u.lang = lang; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }",
+            js="""() => {
+                var textEl = document.querySelector('#vm-tts-text textarea');
+                var langEl = document.querySelector('#vm-tts-lang textarea');
+                var text = textEl ? textEl.value : '';
+                var lang = langEl ? langEl.value : 'en-US';
+                if (!text) return;
+                window.speechSynthesis.cancel();
+                var u = new SpeechSynthesisUtterance(text);
+                u.lang = lang;
+                window.speechSynthesis.speak(u);
+            }""",
         )
         stop_btn.click(
             fn=None,
