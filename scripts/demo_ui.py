@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -118,6 +120,55 @@ ADVICE_TRANSLATIONS: dict[str, dict[str, str]] = {
 ENGINE = Gemma4TriageEngine()
 SESSION_LOG_PATH = PROJECT_ROOT / "evaluation_results" / "demo_session_log.jsonl"
 REFERRAL_DIR = PROJECT_ROOT / "evaluation_results" / "referrals"
+
+_LANG_NAMES = {"sw": "Swahili", "fr": "French", "hi": "Hindi", "ar": "Arabic"}
+
+
+def _translate_via_ollama(items: list[str], lang: str) -> list[str]:
+    """Translate a list of strings using Gemma via Ollama. Returns originals on failure."""
+    if lang == "en" or not items or not settings.use_ollama:
+        return items
+    lang_name = _LANG_NAMES.get(lang, "English")
+    numbered = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(items))
+    prompt = (
+        f"Translate the following medical phrases to {lang_name}. "
+        "Return ONLY the translations, numbered the same way, nothing else.\n\n"
+        + numbered
+    )
+    payload = json.dumps({
+        "model": settings.ollama_model,
+        "prompt": prompt,
+        "stream": False,
+        "options": {"temperature": 0},
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        url=f"{settings.ollama_base_url.rstrip('/')}/api/generate",
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            body = json.loads(resp.read().decode("utf-8"))
+        raw = body.get("response", "").strip()
+        # Parse numbered lines back out
+        translated = []
+        for line in raw.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            # Strip leading "1. " / "2. " etc.
+            import re as _re2
+            cleaned = _re2.sub(r"^\d+\.\s*", "", line)
+            if cleaned:
+                translated.append(cleaned)
+        # Fall back to originals for any missing lines
+        if len(translated) == len(items):
+            return translated
+        # Partial — pad with originals
+        return translated + items[len(translated):]
+    except Exception:
+        return items
 
 
 def backend_status_html() -> str:
@@ -560,11 +611,19 @@ def assess_case(
     local_advice_en = data.get("local_advice", "")
     local_advice = adv_map.get(local_advice_en, local_advice_en)
     actions = data.get("recommended_actions", [])
+    primary_concern = data["primary_concern"]
+
+    # ── Translate dynamic content via Gemma/Ollama ────────────────
+    if lang != "en":
+        to_translate = [primary_concern] + actions
+        translated = _translate_via_ollama(to_translate, lang)
+        primary_concern = translated[0] if translated else primary_concern
+        actions = translated[1:] if len(translated) > 1 else actions
 
     C = "color:#e8f4f5"  # light text on dark card
     html = [
         _severity_badge(severity, lang),
-        f"<p style='{C}'><b>{lbl['primary']}:</b> {data['primary_concern']}</p>",
+        f"<p style='{C}'><b>{lbl['primary']}:</b> {primary_concern}</p>",
         f"<p style='{C}'><b>{lbl['actions']}:</b></p><ul>",
     ]
     for action in actions:
@@ -577,7 +636,7 @@ def assess_case(
     # ── TTS read-aloud button ──────────────────────────────────────
     speak_parts = [
         SEVERITY_LABELS.get(lang, SEVERITY_LABELS["en"]).get(severity, severity),
-        data["primary_concern"],
+        primary_concern,
         local_advice,
     ] + actions[:3]
     speak_text = ". ".join(p for p in speak_parts if p)
