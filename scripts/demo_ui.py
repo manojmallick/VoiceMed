@@ -569,7 +569,7 @@ def assess_case(
     image_path: str | None,
     audio_path: str | None,
     language: str = "English",
-) -> tuple[str, dict, str, str | None, str, str]:
+) -> tuple[str, dict, str, str | None]:
     lang = LANGUAGES.get(language or "English", "en")
     lbl = UI_LABELS.get(lang, UI_LABELS["en"])
     adv_map = ADVICE_TRANSLATIONS.get(lang, ADVICE_TRANSLATIONS["en"])
@@ -581,8 +581,6 @@ def assess_case(
             {"ok": False, "error": "empty_text"},
             "### Quick Summary\n- No input provided",
             None,
-            "",
-            speech_lang_code,
         )
 
     parsed_age = int(age) if age is not None else None
@@ -638,15 +636,22 @@ def assess_case(
     if data.get("referral_letter"):
         html.append(f"<p style='{C}'><b>{lbl['referral']}:</b> {lbl['yes']}</p>")
 
-    # ── TTS text for client-side read-aloud ─────────────────────
+    # ── Embed TTS data as a hidden span (DOMPurify keeps id + data-*) ──
+    import html as _html_enc
     speak_parts = [
         SEVERITY_LABELS.get(lang, SEVERITY_LABELS["en"]).get(severity, severity),
         primary_concern,
         local_advice,
     ] + actions[:3]
     speak_text = ". ".join(p for p in speak_parts if p)
+    html.append(
+        f'<span id="vm-tts-data" '
+        f'data-text="{_html_enc.escape(speak_text, quote=True)}" '
+        f'data-lang="{speech_lang_code}" '
+        f'style="position:absolute;width:0;height:0;overflow:hidden"></span>'
+    )
 
-    return "\n".join(html), data, summary_md, referral_file, speak_text, speech_lang_code
+    return "\n".join(html), data, summary_md, referral_file
 
 
 MOBILE_CSS = """
@@ -815,8 +820,7 @@ def build_ui() -> gr.Blocks:
             with gr.Row():
                 read_aloud_btn = gr.Button("🔊 Read Aloud", variant="secondary", scale=1)
                 stop_btn = gr.Button("⏹ Stop", variant="secondary", scale=1)
-            tts_text = gr.Textbox(value="", visible=False, elem_id="vm-tts-text", label="")
-            tts_lang = gr.Textbox(value="en-US", visible=False, elem_id="vm-tts-lang", label="")
+
 
         # ── Raw JSON (collapsed on mobile) ────────────────────
         with gr.Accordion("🔧 Raw JSON output", open=False):
@@ -845,26 +849,30 @@ def build_ui() -> gr.Blocks:
         submit.click(
             fn=assess_case,
             inputs=[text, patient_name, age, weight, image_input, audio_input, language],
-            outputs=[summary, raw, quick_summary, referral_file, tts_text, tts_lang],
+            outputs=[summary, raw, quick_summary, referral_file],
         )
         text.submit(
             fn=assess_case,
             inputs=[text, patient_name, age, weight, image_input, audio_input, language],
-            outputs=[summary, raw, quick_summary, referral_file, tts_text, tts_lang],
+            outputs=[summary, raw, quick_summary, referral_file],
         )
         read_aloud_btn.click(
             fn=None,
             inputs=[],
             outputs=[],
             js="""() => {
-                var textEl = document.querySelector('#vm-tts-text textarea');
-                var langEl = document.querySelector('#vm-tts-lang textarea');
-                var text = textEl ? textEl.value : '';
-                var lang = langEl ? langEl.value : 'en-US';
+                var el = document.getElementById('vm-tts-data');
+                if (!el) {
+                    alert('Please run an assessment first, then click Read Aloud.');
+                    return;
+                }
+                var text = el.getAttribute('data-text');
+                var lang = el.getAttribute('data-lang') || 'en-US';
                 if (!text) return;
                 window.speechSynthesis.cancel();
                 var u = new SpeechSynthesisUtterance(text);
                 u.lang = lang;
+                u.onerror = function(e) { console.error('[VoiceMed TTS error]', e.error); };
                 window.speechSynthesis.speak(u);
             }""",
         )
