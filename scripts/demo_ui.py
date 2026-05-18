@@ -862,38 +862,64 @@ def build_ui() -> gr.Blocks:
             outputs=[],
             js="""() => {
                 var el = document.getElementById('vm-tts-data');
+                console.log('[VoiceMed TTS] Clicked Read Aloud');
                 if (!el) {
                     alert('Please run an assessment first, then click Read Aloud.');
                     return;
                 }
                 var text = el.getAttribute('data-text');
                 var lang = el.getAttribute('data-lang') || 'en-US';
-                if (!text) return;
+                console.log('[VoiceMed TTS] text:', text);
+                console.log('[VoiceMed TTS] lang:', lang);
+                if (!text) {
+                    alert('No text to speak!');
+                    return;
+                }
 
                 function doSpeak() {
                     window.speechSynthesis.cancel();
                     var u = new SpeechSynthesisUtterance(text);
                     u.lang = lang;
-                    // Pick a matching voice so Chrome doesn't go silent
                     var voices = window.speechSynthesis.getVoices();
                     var langPrefix = lang.split('-')[0];
                     var voice = voices.find(function(v) { return v.lang === lang; })
                              || voices.find(function(v) { return v.lang.startsWith(langPrefix); });
-                    if (voice) u.voice = voice;
-                    u.onerror = function(e) { console.error('[VoiceMed TTS]', e.error); };
+                    if (voice) {
+                        u.voice = voice;
+                        console.log('[VoiceMed TTS] Using voice:', voice.name, voice.lang);
+                    } else {
+                        console.warn('[VoiceMed TTS] No matching voice found for', lang);
+                        alert('No matching voice found for ' + lang + '.');
+                    }
+                    u.onerror = function(e) {
+                        console.error('[VoiceMed TTS error]', e.error);
+                        alert('TTS error: ' + e.error);
+                    };
+                    u.onstart = function() {
+                        console.log('[VoiceMed TTS] Speech started');
+                    };
+                    u.onend = function() {
+                        console.log('[VoiceMed TTS] Speech ended');
+                    };
                     window.speechSynthesis.speak(u);
                 }
 
-                // Chrome loads voices async — wait if not ready yet
                 var voices = window.speechSynthesis.getVoices();
                 if (voices.length > 0) {
+                    console.log('[VoiceMed TTS] Voices loaded:', voices.length);
                     doSpeak();
                 } else {
+                    console.log('[VoiceMed TTS] Waiting for voices...');
                     window.speechSynthesis.onvoiceschanged = function() {
                         window.speechSynthesis.onvoiceschanged = null;
+                        console.log('[VoiceMed TTS] voiceschanged event fired');
                         doSpeak();
                     };
-                    setTimeout(doSpeak, 300); // fallback if event never fires
+                    setTimeout(function() {
+                        if (!window.speechSynthesis.onvoiceschanged) return;
+                        console.warn('[VoiceMed TTS] voiceschanged event did not fire, trying anyway');
+                        doSpeak();
+                    }, 700);
                 }
             }""",
         )
