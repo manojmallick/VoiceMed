@@ -27,6 +27,93 @@ if str(SRC_DIR) not in sys.path:
 from voicemed.engine.model import Gemma4TriageEngine  # noqa: E402
 from voicemed.config import settings  # noqa: E402
 
+# ── Language support ────────────────────────────────────────────────────────
+LANGUAGES = {
+    "English":                "en",
+    "Kiswahili (Swahili)":    "sw",
+    "Français (French)":      "fr",
+    "हिंदी (Hindi)":           "hi",
+    "العربية (Arabic)":        "ar",
+}
+SPEECH_LANG = {"en": "en-US", "sw": "sw-KE", "fr": "fr-FR", "hi": "hi-IN", "ar": "ar-SA"}
+
+SEVERITY_LABELS: dict[str, dict[str, str]] = {
+    "en": {"EMERGENCY": "EMERGENCY", "REFER_URGENT": "URGENT REFERRAL",
+           "REFER_ROUTINE": "ROUTINE REFERRAL", "MONITOR_48H": "MONITOR 48H", "SELF_CARE": "SELF-CARE"},
+    "sw": {"EMERGENCY": "DHARURA", "REFER_URGENT": "RUFAA YA HARAKA",
+           "REFER_ROUTINE": "RUFAA YA KAWAIDA", "MONITOR_48H": "FUATILIA MASAA 48", "SELF_CARE": "HUDUMA YA NYUMBANI"},
+    "fr": {"EMERGENCY": "URGENCE", "REFER_URGENT": "RÉFÉRENCE URGENTE",
+           "REFER_ROUTINE": "RÉFÉRENCE ROUTINIÈRE", "MONITOR_48H": "SURVEILLER 48H", "SELF_CARE": "SOINS À DOMICILE"},
+    "hi": {"EMERGENCY": "आपातकाल", "REFER_URGENT": "तत्काल रेफरल",
+           "REFER_ROUTINE": "नियमित रेफरल", "MONITOR_48H": "48 घंटे निगरानी", "SELF_CARE": "घरेलू देखभाल"},
+    "ar": {"EMERGENCY": "طارئ", "REFER_URGENT": "إحالة عاجلة",
+           "REFER_ROUTINE": "إحالة روتينية", "MONITOR_48H": "مراقبة 48 ساعة", "SELF_CARE": "رعاية منزلية"},
+}
+UI_LABELS: dict[str, dict[str, str]] = {
+    "en": {"primary": "Primary concern", "actions": "Recommended actions",
+           "advice": "Patient advice", "referral": "Referral letter generated", "yes": "Yes"},
+    "sw": {"primary": "Tatizo kuu", "actions": "Hatua zinazopendekezwa",
+           "advice": "Ushauri kwa mgonjwa", "referral": "Barua ya rufaa imetolewa", "yes": "Ndiyo"},
+    "fr": {"primary": "Préoccupation principale", "actions": "Actions recommandées",
+           "advice": "Conseils au patient", "referral": "Lettre de référence générée", "yes": "Oui"},
+    "hi": {"primary": "मुख्य चिंता", "actions": "अनुशंसित कार्रवाई",
+           "advice": "रोगी को सलाह", "referral": "रेफरल पत्र तैयार", "yes": "हाँ"},
+    "ar": {"primary": "المخاوف الرئيسية", "actions": "الإجراءات الموصى بها",
+           "advice": "نصيحة للمريض", "referral": "تم إنشاء خطاب الإحالة", "yes": "نعم"},
+}
+ADVICE_TRANSLATIONS: dict[str, dict[str, str]] = {
+    "en": {
+        "Home care is reasonable now; return if symptoms worsen.":
+            "Home care is reasonable now; return if symptoms worsen.",
+        "Monitor for 48 hours and reassess sooner if any red flags appear.":
+            "Monitor for 48 hours and reassess sooner if any red flags appear.",
+        "Arrange clinic review within 24 hours.": "Arrange clinic review within 24 hours.",
+        "Refer urgently to a higher facility today.": "Refer urgently to a higher facility today.",
+        "Activate emergency referral immediately.": "Activate emergency referral immediately.",
+        "Seek clinical review.": "Seek clinical review.",
+    },
+    "sw": {
+        "Home care is reasonable now; return if symptoms worsen.":
+            "Huduma ya nyumbani inafaa; rudi ikiwa dalili zitazidi.",
+        "Monitor for 48 hours and reassess sooner if any red flags appear.":
+            "Fuatilia masaa 48 na tathmini upya ikiwa dalili za hatari zitatokea.",
+        "Arrange clinic review within 24 hours.": "Panga ziara ya kliniki ndani ya masaa 24.",
+        "Refer urgently to a higher facility today.": "Peleka kwa haraka kwenye kituo cha juu leo.",
+        "Activate emergency referral immediately.": "Anzisha rufaa ya dharura mara moja.",
+        "Seek clinical review.": "Tafuta tathmini ya kimatibabu.",
+    },
+    "fr": {
+        "Home care is reasonable now; return if symptoms worsen.":
+            "Les soins à domicile sont raisonnables; revenez si les symptômes s'aggravent.",
+        "Monitor for 48 hours and reassess sooner if any red flags appear.":
+            "Surveiller 48 heures et réévaluer si des signaux d'alarme apparaissent.",
+        "Arrange clinic review within 24 hours.": "Organiser une consultation dans les 24 heures.",
+        "Refer urgently to a higher facility today.": "Référer d'urgence vers un établissement supérieur aujourd'hui.",
+        "Activate emergency referral immediately.": "Activer la référence d'urgence immédiatement.",
+        "Seek clinical review.": "Consulter un médecin.",
+    },
+    "hi": {
+        "Home care is reasonable now; return if symptoms worsen.":
+            "अभी घरेलू देखभाल उचित है; लक्षण बिगड़ें तो वापस आएं।",
+        "Monitor for 48 hours and reassess sooner if any red flags appear.":
+            "48 घंटे निगरानी करें; खतरे के संकेत दिखें तो पहले पुनर्मूल्यांकन करें।",
+        "Arrange clinic review within 24 hours.": "24 घंटों में क्लिनिक जांच की व्यवस्था करें।",
+        "Refer urgently to a higher facility today.": "आज उच्च केंद्र में तत्काल रेफर करें।",
+        "Activate emergency referral immediately.": "तुरंत आपातकालीन रेफरल सक्रिय करें।",
+        "Seek clinical review.": "चिकित्सीय समीक्षा लें।",
+    },
+    "ar": {
+        "Home care is reasonable now; return if symptoms worsen.":
+            "الرعاية المنزلية مناسبة الآن؛ عد إذا تفاقمت الأعراض.",
+        "Monitor for 48 hours and reassess sooner if any red flags appear.":
+            "راقب 48 ساعة وأعد التقييم مبكراً إذا ظهرت علامات تحذيرية.",
+        "Arrange clinic review within 24 hours.": "رتب مراجعة في العيادة خلال 24 ساعة.",
+        "Refer urgently to a higher facility today.": "أحل بشكل عاجل إلى مرفق أعلى اليوم.",
+        "Activate emergency referral immediately.": "فعّل الإحالة الطارئة على الفور.",
+        "Seek clinical review.": "اطلب مراجعة سريرية.",
+    },
+}
+
 
 ENGINE = Gemma4TriageEngine()
 SESSION_LOG_PATH = PROJECT_ROOT / "evaluation_results" / "demo_session_log.jsonl"
@@ -70,7 +157,7 @@ def backend_status_html() -> str:
     )
 
 
-def _severity_badge(severity: str) -> str:
+def _severity_badge(severity: str, lang: str = "en") -> str:
     color = {
         "EMERGENCY": "#c92a2a",
         "REFER_URGENT": "#d9480f",
@@ -78,10 +165,11 @@ def _severity_badge(severity: str) -> str:
         "MONITOR_48H": "#2b8a3e",
         "SELF_CARE": "#1971c2",
     }.get(severity, "#495057")
+    label = SEVERITY_LABELS.get(lang, SEVERITY_LABELS["en"]).get(severity, severity)
     return (
         "<div style='padding:10px 14px;border-radius:10px;"
         f"background:{color};color:white;font-weight:700;display:inline-block'>"
-        f"Severity: {severity}</div>"
+        f"⚕ {label}</div>"
     )
 
 
@@ -427,7 +515,12 @@ def assess_case(
     weight: float | None,
     image_path: str | None,
     audio_path: str | None,
+    language: str = "English",
 ) -> tuple[str, dict, str, str | None]:
+    lang = LANGUAGES.get(language or "English", "en")
+    lbl = UI_LABELS.get(lang, UI_LABELS["en"])
+    adv_map = ADVICE_TRANSLATIONS.get(lang, ADVICE_TRANSLATIONS["en"])
+
     if not text or not text.strip():
         return (
             "<b>Please enter a patient description.</b>",
@@ -463,17 +556,47 @@ def assess_case(
     referral_file = _build_referral_pdf(data.get("referral_letter"), data, image_path, name)
     summary_md = _build_summary(data)
 
+    severity = data["severity"]
+    local_advice_en = data.get("local_advice", "")
+    local_advice = adv_map.get(local_advice_en, local_advice_en)
+    actions = data.get("recommended_actions", [])
+
+    C = "color:#e8f4f5"  # light text on dark card
     html = [
-        _severity_badge(data["severity"]),
-        f"<p><b>Primary concern:</b> {data['primary_concern']}</p>",
-        "<p><b>Recommended actions:</b></p><ul>",
+        _severity_badge(severity, lang),
+        f"<p style='{C}'><b>{lbl['primary']}:</b> {data['primary_concern']}</p>",
+        f"<p style='{C}'><b>{lbl['actions']}:</b></p><ul>",
     ]
-    for action in data.get("recommended_actions", []):
-        html.append(f"<li>{action}</li>")
+    for action in actions:
+        html.append(f"<li style='{C}'>{action}</li>")
     html.append("</ul>")
-    html.append(f"<p><b>Patient advice:</b> {data.get('local_advice', '')}</p>")
+    html.append(f"<p style='{C}'><b>{lbl['advice']}:</b> {local_advice}</p>")
     if data.get("referral_letter"):
-        html.append("<p><b>Referral letter generated:</b> Yes</p>")
+        html.append(f"<p style='{C}'><b>{lbl['referral']}:</b> {lbl['yes']}</p>")
+
+    # ── TTS read-aloud button ──────────────────────────────────────
+    speak_parts = [
+        SEVERITY_LABELS.get(lang, SEVERITY_LABELS["en"]).get(severity, severity),
+        data["primary_concern"],
+        local_advice,
+    ] + actions[:3]
+    speak_text = ". ".join(p for p in speak_parts if p)
+    speak_js = json.dumps(speak_text)  # properly escaped for JS string
+    speech_lang_code = SPEECH_LANG.get(lang, "en-US")
+    btn_style = (
+        "margin-top:12px;padding:8px 18px;border-radius:8px;"
+        "border:1px solid #1a6b6e;background:transparent;"
+        "color:#a0c4c6;cursor:pointer;font-size:0.9rem;margin-right:8px"
+    )
+    html.append(
+        f"<button style='{btn_style}' "
+        f"onclick=\"(function(){{var u=new SpeechSynthesisUtterance({speak_js});"
+        f"u.lang='{speech_lang_code}';"
+        f"window.speechSynthesis.cancel();"
+        f"window.speechSynthesis.speak(u);}})()\">"
+        f"🔊 Read Aloud</button>"
+        f"<button style='{btn_style}' onclick='window.speechSynthesis.cancel()'>⏹ Stop</button>"
+    )
 
     return "\n".join(html), data, summary_md, referral_file
 
@@ -516,6 +639,10 @@ body, .gradio-container {
     padding: 14px;
     margin-bottom: 10px;
     border: 1px solid #2a2a3e;
+}
+/* ── Ensure result text is always readable on dark card ── */
+.vm-card p, .vm-card li, .vm-card b, .vm-card strong, .vm-card label {
+    color: #e8f4f5;
 }
 
 /* ── Big tap-friendly buttons ────────────────────────── */
@@ -578,7 +705,14 @@ def build_ui() -> gr.Blocks:
 
         gr.HTML(backend_status_html())
 
-        # ── Input section ─────────────────────────────────────
+        # ── Language selector ─────────────────────────────────
+        with gr.Row():
+            language = gr.Dropdown(
+                label="🌍 Language / Lugha / Langue",
+                choices=list(LANGUAGES.keys()),
+                value="English",
+                scale=1,
+            )
         with gr.Column(elem_classes="vm-card"):
             patient_name = gr.Textbox(
                 label="👤 Patient name (optional)",
@@ -657,12 +791,12 @@ def build_ui() -> gr.Blocks:
         )
         submit.click(
             fn=assess_case,
-            inputs=[text, patient_name, age, weight, image_input, audio_input],
+            inputs=[text, patient_name, age, weight, image_input, audio_input, language],
             outputs=[summary, raw, quick_summary, referral_file],
         )
         text.submit(
             fn=assess_case,
-            inputs=[text, patient_name, age, weight, image_input, audio_input],
+            inputs=[text, patient_name, age, weight, image_input, audio_input, language],
             outputs=[summary, raw, quick_summary, referral_file],
         )
         _ = examples
