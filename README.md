@@ -4,7 +4,7 @@
 >
 > Runs offline on a $150 Android phone. Zero internet. Zero cloud. Zero cost per query.
 
-![VoiceMed](VOICEMED_FULL_PLAN.md) • [Architecture](ARCHITECTURE.md) • [Demo Video Guide](DEMO_VIDEO_GUIDE.md) • [Health Check](HEALTHCHECK.md)
+![VoiceMed](VOICEMED_FULL_PLAN.md) • [Architecture](ARCHITECTURE.md) • [Health Check](HEALTHCHECK.md)
 
 ---
 
@@ -502,19 +502,6 @@ Areas for contribution:
 - **Discussions:** GitHub Discussions for questions and ideas
 - **Documentation:** See [ARCHITECTURE.md](ARCHITECTURE.md) for technical deep-dive
 - **Examples:** Check [VoiceMed_Demo.ipynb](VoiceMed_Demo.ipynb) for notebook examples
-
----
-
-## 🎬 Demo & Video Guide
-
-For setup instructions and demo walkthrough, see [DEMO_VIDEO_GUIDE.md](DEMO_VIDEO_GUIDE.md).
-
-Key demo scenarios:
-1. Offline triage with airplane mode enabled
-2. Voice input processing with local transcription
-3. Image analysis for wound assessment
-4. Referral letter generation
-5. LAN deployment on multiple devices
 
 ---
 
